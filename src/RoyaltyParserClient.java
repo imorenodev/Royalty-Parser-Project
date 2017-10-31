@@ -3,13 +3,14 @@ import java.util.*;
 public class RoyaltyParserClient {
 
     public static void main(String[] args) {
+    		String[] authors = new String[] {"Brittany", "Claire", "Jeanne", "Katrina", "Nicole", "Rebecca"};
+    		UserGUI gui = new UserGUI();
     		/**
         List<String> asins = new ArrayList<>();
 		asins.add("B00R6VNRMO");
 		asins.add("B00X09L2OG");
 		*/
 		List<Book> amazonRawData = RetailerRawData.getData("KDPRoyalties.xlsx");
-    		String[] authors = new String[] {"Brittany", "Claire", "Jeanne", "Katrina", "Nicole", "Rebecca"};
 		
     		for (String author : authors) {
     			String reportName = author.toString() + "'s Amazon Report";
@@ -18,6 +19,7 @@ public class RoyaltyParserClient {
     			System.out.println(a);
     			System.out.println(amazonReport);
     		}
+    		
+    		gui.createAndShowGUI();
     }
-
 }
