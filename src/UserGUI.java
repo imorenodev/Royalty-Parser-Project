@@ -8,8 +8,24 @@ public class UserGUI extends JPanel implements ActionListener {
 	static private final String newline = "\n";
 	JButton openButton, saveButton;
 	JFileChooser fileChooser;
+
+	/**
+	 * Create the GUI and show it.
+	 */
+	public static void createAndShowGUI() {
+		//Create the window.
+		JFrame frame = new JFrame("Royalty Parser");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
-	public UserGUI() {
+		//Add content to the window.
+		frame.add(new UserGUI());
+ 
+		//Display the window.
+		frame.pack();
+		frame.setVisible(true);
+	}
+ 
+	private UserGUI() {
 		super(new BorderLayout());
  
 		//Create a file chooser
@@ -56,19 +72,4 @@ public class UserGUI extends JPanel implements ActionListener {
 		}
 	}
  
-	/**
-	 * Create the GUI and show it.
-	 */
-	public static void createAndShowGUI() {
-		//Create the window.
-		JFrame frame = new JFrame("Royalty Parser");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-		//Add content to the window.
-		frame.add(new UserGUI());
- 
-		//Display the window.
-		frame.pack();
-		frame.setVisible(true);
-	}
 }
