@@ -7,9 +7,11 @@ public class RoyaltyParserClient {
 		asins.add("B00R6VNRMO");
 		asins.add("B00X09L2OG");
 		
-		Author claire = new Author("Claire", asins);
+		Author claire = new Author("Claire");
 		
-		AuthorReport amazonReport = new AuthorReport("Claire's Amazon Report", RetailerRawData.getData("KDPRoyalties.xlsx"), claire.getASINList());
+		List<Book> amazonRawData = RetailerRawData.getData("KDPRoyalties.xlsx");
+
+		AuthorReport amazonReport = new AuthorReport("Claire's Amazon Report", amazonRawData, claire.getASINList());
 
 		System.out.println(claire);
 		
