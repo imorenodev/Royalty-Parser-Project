@@ -7,14 +7,13 @@ import java.io.File;
 public class UserGUI extends JPanel implements ActionListener {
 	static private final String newline = "\n";
 	JButton openButton, saveButton;
-	JTextArea log;
-	JFileChooser fc;
+	JFileChooser fileChooser;
  
 	public UserGUI() {
 		super(new BorderLayout());
  
 		//Create a file chooser
-		fc = new JFileChooser();
+		fileChooser = new JFileChooser();
 
 		openButton = new JButton("Open a File...");
 								 
@@ -35,10 +34,10 @@ public class UserGUI extends JPanel implements ActionListener {
  
 		//Handle open button action.
 		if (e.getSource() == openButton) {
-			int returnVal = fc.showOpenDialog(UserGUI.this);
+			int returnVal = fileChooser.showOpenDialog(UserGUI.this);
  
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
+				File file = fileChooser.getSelectedFile();
 				//Handle opening file.
 			} else {
 				JOptionPane.showMessageDialog(this, "Open command cancelled by user." + newline);
@@ -46,9 +45,9 @@ public class UserGUI extends JPanel implements ActionListener {
  
 		//Handle save button action.
 		} else if (e.getSource() == saveButton) {
-			int returnVal = fc.showSaveDialog(UserGUI.this);
+			int returnVal = fileChooser.showSaveDialog(UserGUI.this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
+				File file = fileChooser.getSelectedFile();
 				//handle saving the file.
 				JOptionPane.showMessageDialog(this, "Saving: " + file.getName() + "." + newline);
 			} else {

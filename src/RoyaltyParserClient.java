@@ -4,7 +4,6 @@ public class RoyaltyParserClient {
 
     public static void main(String[] args) {
     		String[] authors = new String[] {"Brittany", "Claire", "Jeanne", "Katrina", "Nicole", "Rebecca"};
-    		UserGUI gui = new UserGUI();
     		/**
         List<String> asins = new ArrayList<>();
 		asins.add("B00R6VNRMO");
@@ -20,6 +19,6 @@ public class RoyaltyParserClient {
     			System.out.println(amazonReport);
     		}
     		
-    		gui.createAndShowGUI();
+    		UserGUI.createAndShowGUI();
     }
 }
