@@ -3,19 +3,21 @@ import java.util.*;
 public class RoyaltyParserClient {
 
     public static void main(String[] args) {
+    		/**
         List<String> asins = new ArrayList<>();
 		asins.add("B00R6VNRMO");
 		asins.add("B00X09L2OG");
-		
-		Author claire = new Author("Claire");
-		
+		*/
 		List<Book> amazonRawData = RetailerRawData.getData("KDPRoyalties.xlsx");
-
-		AuthorReport amazonReport = new AuthorReport("Claire's Amazon Report", amazonRawData, claire.getASINList());
-
-		System.out.println(claire);
+    		String[] authors = new String[] {"Brittany", "Claire", "Jeanne", "Katrina", "Nicole", "Rebecca"};
 		
-		System.out.println(amazonReport);
+    		for (String author : authors) {
+    			String reportName = author.toString() + "'s Amazon Report";
+    			Author a = new Author(author.toString());
+    			AuthorReport amazonReport = new AuthorReport(reportName, amazonRawData, a.getASINList());
+    			System.out.println(a);
+    			System.out.println(amazonReport);
+    		}
     }
 
 }

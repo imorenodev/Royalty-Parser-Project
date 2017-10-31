@@ -137,5 +137,34 @@ public class Author {
 			ASINList.add("B009QQHSJ0");
 			ASINList.add("B00A95CZ9U");
 		}
+		else if (name.equalsIgnoreCase("Brittany")) {
+			ASINList.add("B00TVN74X8");
+			ASINList.add("B017GGHJ40");
+			ASINList.add("B00IG9MH0S");
+			ASINList.add("B00X09L2OG");
+			ASINList.add("B00QCLLA8W");
+			ASINList.add("B016VAQO7A");
+			ASINList.add("B00MYGPS3W");
+			ASINList.add("B01I2JJ0Q0");
+			ASINList.add("B01E6LIKSC");
+		}
+		else if (name.equalsIgnoreCase("Jeanne")) {
+			ASINList.add("B00R6VNRMO");
+			ASINList.add("B00MRO6LNM");
+			ASINList.add("B00YT22C7E");
+			ASINList.add("B0157J6B2O");
+			ASINList.add("B00IMKD22I");
+			ASINList.add("B00KSQDA7G");
+		}
+		else if (name.equalsIgnoreCase("Nicole")) {
+			ASINList.add("B00OSUYTNM");
+			ASINList.add("B00KHTMFDE");
+			ASINList.add("B00IA9T8JW");
+			ASINList.add("B00R1OU0QM");
+			ASINList.add("B00SUJG2OG");
+			ASINList.add("B00UGE4GC8");
+			ASINList.add("B00YB9S904");
+			ASINList.add("B012PWX57U");
+		}
 	}
 }
