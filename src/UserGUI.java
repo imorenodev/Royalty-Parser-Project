@@ -42,7 +42,7 @@ public class UserGUI extends JFrame {
 	public UserGUI() {
 		//Create the window.
 		JFrame frame = new JFrame("Royalty Parser");
-		frame.setLayout(new GridLayout(4,1));
+		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		buildReportsPanel();
@@ -135,7 +135,7 @@ public class UserGUI extends JFrame {
 		authorsPanel = new JPanel();
 		authorsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Author Profiles")
 				));
 		authorsPanel.setLayout(new BorderLayout());
 
@@ -191,7 +191,7 @@ public class UserGUI extends JFrame {
 		ASINsPanel = new JPanel();
 		ASINsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Author's ASINs")
 				));
 		ASINsPanel.setLayout(new BorderLayout());
 
@@ -240,20 +240,16 @@ public class UserGUI extends JFrame {
 	
 	
 	private void buildButtonsPanel() {
-		JPanel eastPanel = new JPanel(new GridLayout(2,1));
-		
 		ButtonsPanel = new JPanel();
-		ButtonsPanel.setLayout(new BorderLayout());
+		ButtonsPanel.setLayout(new FlowLayout());
 
 		createButton = new JButton("Create Reports");
 		createButton.addActionListener(new CreateButtonListener());
-		eastPanel.add(createButton);
+		ButtonsPanel.add(createButton);
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new CancelButtonListener());
-		eastPanel.add(cancelButton);
-		
-		ButtonsPanel.add(eastPanel, BorderLayout.EAST);
+		ButtonsPanel.add(cancelButton);
 	}
 	
 	private class CreateButtonListener implements ActionListener {
