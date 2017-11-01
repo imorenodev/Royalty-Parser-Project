@@ -6,3 +6,9 @@
 /UserGUI$1.class
 /UserGUI.class
 /UserGUI$reportsPanel.class
+/UserGUI$browse.class
+/UserGUI$BrowseButtonListener.class
+/UserGUI$AddButtonListener.class
+/UserGUI$AddReportButtonListener.class
+/UserGUI$RemoveReportButtonListener.class
+/UserGUI$ReportListSelectionListener.class

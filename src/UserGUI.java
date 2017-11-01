@@ -1,50 +1,124 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class UserGUI extends JPanel implements ActionListener {
+public class UserGUI extends JFrame {
 	static private final String newline = "\n";
-	JButton openButton, saveButton;
-	JFileChooser fileChooser;
+	private JFileChooser fileChooser;
+	private JButton browseButton, 
+			addReportButton, 
+			removeReportButton, 
+			addAuthorButton, 
+			removeAuthorButton, 
+			addASINButton, 
+			removeASINButton,
+			confirmButton,
+			cancelButton;
+	private JPanel reportsPanel;
+	private JPanel authorsPanel;
+	private JPanel ASINsPanel;
+	private JLabel findReportLabel;
+	private JLabel enterAuthorNameLabel;
+	private JLabel enterASINLabel;
+	private JTextField findReportField;
+	private JTextField enterAuthorNameField;
+	private JTextField enterASINField;
+	private JList reportList;
 
+	private void buildReportsPanel() {
+		reportsPanel = new JPanel();
+		findReportLabel = new JLabel("Find Report");
+		findReportField = new JTextField(40);
+		browseButton = new JButton("Browse");
+		browseButton.addActionListener(new BrowseButtonListener());
+		reportList = new JList();
+		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		reportList.addListSelectionListener(new ReportListSelectionListener());
+		addReportButton = new JButton("Add Report");
+		addReportButton.addActionListener(new AddReportButtonListener());
+		removeReportButton = new JButton("Remove Report");
+		removeReportButton.addActionListener(new RemoveReportButtonListener());
+
+		GroupLayout layout = new GroupLayout(reportsPanel);
+		reportsPanel.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+					.addComponent(findReportLabel)
+					.addGroup(layout.createParallelGroup()
+							.addComponent(findReportField)
+							.addComponent(reportList))
+					.addGroup(layout.createParallelGroup()
+							.addComponent(browseButton)
+							.addComponent(addReportButton)
+							.addComponent(removeReportButton))
+				);
+				layout.setVerticalGroup(
+						layout.createSequentialGroup()
+							.addGroup(layout.createParallelGroup()
+									.addComponent(findReportLabel)
+									.addComponent(findReportField)
+									.addComponent(browseButton))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(reportList)
+									.addComponent(addReportButton))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(removeReportButton))
+				);
+		
+	}
+	
+	private class ReportListSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			// handle list selection event
+		}
+	}
+	
+	private class BrowseButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class AddReportButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class RemoveReportButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+	
 	/**
-	 * Create the GUI and show it.
+	 * Constructor for UserGUI
 	 */
-	public static void createAndShowGUI() {
+	public UserGUI() {
 		//Create the window.
 		JFrame frame = new JFrame("Royalty Parser");
+		frame.setLayout(new FlowLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		buildReportsPanel();
  
 		//Add content to the window.
-		frame.add(new UserGUI());
+		frame.add(reportsPanel);
  
 		//Display the window.
 		frame.pack();
 		frame.setVisible(true);
 	}
  
-	private UserGUI() {
-		super(new BorderLayout());
- 
-		//Create a file chooser
-		fileChooser = new JFileChooser();
-
-		openButton = new JButton("Open a File...");
-								 
-		openButton.addActionListener(this);
- 
-		saveButton = new JButton("Save a File...");
-		saveButton.addActionListener(this);
- 
-		JPanel buttonPanel = new JPanel(); //use FlowLayout
-		buttonPanel.add(openButton);
-		buttonPanel.add(saveButton);
- 
-		//Add the buttons to this panel.
-		add(buttonPanel, BorderLayout.PAGE_START);
-	}
+/**	
  
 	public void actionPerformed(ActionEvent e) {
  
@@ -71,5 +145,5 @@ public class UserGUI extends JPanel implements ActionListener {
 			}
 		}
 	}
- 
+*/ 
 }

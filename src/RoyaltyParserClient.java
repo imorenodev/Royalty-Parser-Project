@@ -19,6 +19,6 @@ public class RoyaltyParserClient {
     			System.out.println(amazonReport);
     		}
     		
-    		UserGUI.createAndShowGUI();
+    		new UserGUI();
     }
 }
