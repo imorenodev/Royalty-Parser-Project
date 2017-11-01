@@ -12,3 +12,8 @@
 /UserGUI$AddReportButtonListener.class
 /UserGUI$RemoveReportButtonListener.class
 /UserGUI$ReportListSelectionListener.class
+/UserGUI$addAuthorButtonListener.class
+/UserGUI$authorNameListSelectionListener.class
+/UserGUI$AuthorNameListSelectionListener.class
+/UserGUI$AddAuthorButtonListener.class
+/UserGUI$RemoveAuthorButtonListener.class
