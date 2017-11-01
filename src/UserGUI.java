@@ -36,9 +36,10 @@ public class UserGUI extends JFrame {
 		findReportField = new JTextField(40);
 		browseButton = new JButton("Browse");
 		browseButton.addActionListener(new BrowseButtonListener());
-		reportList = new JList();
+		reportList = new JList(new String[] {"Ian", "Joey", "Kushal", "Andrea", "Yusef"});
 		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		reportList.addListSelectionListener(new ReportListSelectionListener());
+		reportList.setVisibleRowCount(5);
 		addReportButton = new JButton("Add Report");
 		addReportButton.addActionListener(new AddReportButtonListener());
 		removeReportButton = new JButton("Remove Report");
@@ -49,12 +50,14 @@ public class UserGUI extends JFrame {
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 		
+		reportsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports"));
+		
 		layout.setHorizontalGroup(
 				layout.createSequentialGroup()
 					.addComponent(findReportLabel)
-					.addGroup(layout.createParallelGroup()
-							.addComponent(findReportField)
-							.addComponent(reportList))
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+							.addComponent(findReportField, 475, 475, 475)
+							.addComponent(reportList, 475, 475, 475))
 					.addGroup(layout.createParallelGroup()
 							.addComponent(browseButton)
 							.addComponent(addReportButton)
@@ -68,10 +71,10 @@ public class UserGUI extends JFrame {
 									.addComponent(browseButton))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(reportList)
-									.addComponent(addReportButton))
-							.addGroup(layout.createParallelGroup()
+									.addComponent(addReportButton)
 									.addComponent(removeReportButton))
 				);
+		layout.linkSize(SwingConstants.HORIZONTAL, browseButton, addReportButton, removeReportButton);
 		
 	}
 	
