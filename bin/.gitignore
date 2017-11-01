@@ -20,3 +20,5 @@
 /UserGUI$ASINsListSelectionListener.class
 /UserGUI$AddASINButtonListener.class
 /UserGUI$RemoveASINButtonListener.class
+/UserGUI$CancelButtonListener.class
+/UserGUI$CreateButtonListener.class

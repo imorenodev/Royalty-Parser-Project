@@ -17,11 +17,12 @@ public class UserGUI extends JFrame {
 			removeAuthorButton, 
 			addASINButton, 
 			removeASINButton,
-			confirmButton,
+			createButton,
 			cancelButton;
 	private JPanel reportsPanel;
 	private JPanel authorsPanel;
 	private JPanel ASINsPanel;
+	private JPanel ButtonsPanel;
 	private JLabel findReportLabel;
 	private JLabel enterAuthorNameLabel;
 	private JLabel enterASINLabel;
@@ -41,17 +42,19 @@ public class UserGUI extends JFrame {
 	public UserGUI() {
 		//Create the window.
 		JFrame frame = new JFrame("Royalty Parser");
-		frame.setLayout(new GridLayout(3,1));
+		frame.setLayout(new GridLayout(4,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		buildReportsPanel();
 		buildAuthorProfilesPanel();
 		buildASINsPanel();
+		buildButtonsPanel();
  
 		//Add content to the window.
 		frame.add(reportsPanel);
 		frame.add(authorsPanel);
 		frame.add(ASINsPanel);
+		frame.add(ButtonsPanel);
  
 		//Display the window.
 		frame.pack();
@@ -64,7 +67,10 @@ public class UserGUI extends JFrame {
 		JPanel eastPanel = new JPanel(new GridLayout(3,1));
 		
 		reportsPanel = new JPanel();
-		reportsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports"));
+		reportsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				));
 		reportsPanel.setLayout(new BorderLayout());
 
 		findReportLabel = new JLabel("Find Report");
@@ -127,7 +133,10 @@ public class UserGUI extends JFrame {
 		JPanel eastPanel = new JPanel(new GridLayout(3,1));
 		
 		authorsPanel = new JPanel();
-		authorsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Choose Author Profiles"));
+		authorsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				));
 		authorsPanel.setLayout(new BorderLayout());
 
 		enterAuthorNameLabel = new JLabel("Enter New Author");
@@ -180,7 +189,10 @@ public class UserGUI extends JFrame {
 		JPanel eastPanel = new JPanel(new GridLayout(3,1));
 		
 		ASINsPanel = new JPanel();
-		ASINsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Manage Author ASINs"));
+		ASINsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				));
 		ASINsPanel.setLayout(new BorderLayout());
 
 		enterASINLabel = new JLabel("Enter New ASIN");
@@ -221,6 +233,36 @@ public class UserGUI extends JFrame {
 	}
 
 	private class RemoveASINButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} //END ASINs 
+	
+	
+	private void buildButtonsPanel() {
+		JPanel eastPanel = new JPanel(new GridLayout(2,1));
+		
+		ButtonsPanel = new JPanel();
+		ButtonsPanel.setLayout(new BorderLayout());
+
+		createButton = new JButton("Create Reports");
+		createButton.addActionListener(new CreateButtonListener());
+		eastPanel.add(createButton);
+
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new CancelButtonListener());
+		eastPanel.add(cancelButton);
+		
+		ButtonsPanel.add(eastPanel, BorderLayout.EAST);
+	}
+	
+	private class CreateButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class CancelButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 		}
