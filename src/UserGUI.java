@@ -32,6 +32,8 @@ public class UserGUI extends JFrame {
 	private JScrollPane reportListScrollPane;
 	private JList authorNameList;
 	private JScrollPane authorNameListScrollPane;
+	private JList ASINsList;
+	private JScrollPane ASINsListScrollPane;
 
 	/**
 	 * Constructor for UserGUI
@@ -44,10 +46,12 @@ public class UserGUI extends JFrame {
 
 		buildReportsPanel();
 		buildAuthorProfilesPanel();
+		buildASINsPanel();
  
 		//Add content to the window.
 		frame.add(reportsPanel);
 		frame.add(authorsPanel);
+		frame.add(ASINsPanel);
  
 		//Display the window.
 		frame.pack();
@@ -167,7 +171,60 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 		}
+	} // END AUTHOR PROFILES
+
+
+	private void buildASINsPanel() {
+		JPanel northPanel = new JPanel();
+		JPanel centerPanel = new JPanel();
+		JPanel eastPanel = new JPanel(new GridLayout(3,1));
+		
+		ASINsPanel = new JPanel();
+		ASINsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Manage Author ASINs"));
+		ASINsPanel.setLayout(new BorderLayout());
+
+		enterASINLabel = new JLabel("Enter New ASIN");
+		enterASINField = new JTextField(40);
+		addASINButton = new JButton("Add ASIN");
+		addASINButton.addActionListener(new AddASINButtonListener());
+		northPanel.add(enterASINLabel);
+		northPanel.add(enterASINField);
+		northPanel.add(addASINButton);
+
+		ASINsList = new JList(new String[] {"AS1234", "AS5678", "AS91012123", "AS123142", "AS9876", "AS65432", "AS4313123", "AS990002"});
+		ASINsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		ASINsList.addListSelectionListener(new ASINsListSelectionListener());
+		ASINsList.setVisibleRowCount(5);
+		ASINsListScrollPane = new JScrollPane(ASINsList);
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(ASINsListScrollPane, BorderLayout.CENTER);
+
+		removeASINButton = new JButton("Remove ASIN");
+		removeASINButton.addActionListener(new RemoveASINButtonListener());
+		eastPanel.add(removeASINButton);
+		
+		ASINsPanel.add(northPanel, BorderLayout.NORTH);
+		ASINsPanel.add(centerPanel, BorderLayout.CENTER);
+		ASINsPanel.add(eastPanel, BorderLayout.EAST);
 	}
+	
+	private class ASINsListSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			// handle list selection event
+		}
+	}
+	
+	private class AddASINButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class RemoveASINButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} //END ASINs 
 /**	
  
 	public void actionPerformed(ActionEvent e) {

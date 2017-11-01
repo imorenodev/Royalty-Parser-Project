@@ -17,3 +17,6 @@
 /UserGUI$AuthorNameListSelectionListener.class
 /UserGUI$AddAuthorButtonListener.class
 /UserGUI$RemoveAuthorButtonListener.class
+/UserGUI$ASINsListSelectionListener.class
+/UserGUI$AddASINButtonListener.class
+/UserGUI$RemoveASINButtonListener.class
