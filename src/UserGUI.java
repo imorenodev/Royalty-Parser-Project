@@ -31,51 +31,39 @@ public class UserGUI extends JFrame {
 	private JList reportList;
 
 	private void buildReportsPanel() {
+		JPanel northPanel = new JPanel();
+		JPanel centerPanel = new JPanel();
+		JPanel eastPanel = new JPanel();
+		
+		
 		reportsPanel = new JPanel();
+		reportsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports"));
+		reportsPanel.setLayout(new BorderLayout());
+
 		findReportLabel = new JLabel("Find Report");
 		findReportField = new JTextField(40);
 		browseButton = new JButton("Browse");
 		browseButton.addActionListener(new BrowseButtonListener());
+		northPanel.add(findReportLabel);
+		northPanel.add(findReportField);
+		northPanel.add(browseButton);
+
 		reportList = new JList(new String[] {"Ian", "Joey", "Kushal", "Andrea", "Yusef"});
 		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		reportList.addListSelectionListener(new ReportListSelectionListener());
 		reportList.setVisibleRowCount(5);
+		centerPanel.add(reportList);
+
 		addReportButton = new JButton("Add Report");
 		addReportButton.addActionListener(new AddReportButtonListener());
 		removeReportButton = new JButton("Remove Report");
 		removeReportButton.addActionListener(new RemoveReportButtonListener());
-
-		GroupLayout layout = new GroupLayout(reportsPanel);
-		reportsPanel.setLayout(layout);
-		layout.setAutoCreateGaps(true);
-		layout.setAutoCreateContainerGaps(true);
+		eastPanel.add(addReportButton);
+		eastPanel.add(removeReportButton);
 		
-		reportsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports"));
-		
-		layout.setHorizontalGroup(
-				layout.createSequentialGroup()
-					.addComponent(findReportLabel)
-					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-							.addComponent(findReportField, 475, 475, 475)
-							.addComponent(reportList, 475, 475, 475))
-					.addGroup(layout.createParallelGroup()
-							.addComponent(browseButton)
-							.addComponent(addReportButton)
-							.addComponent(removeReportButton))
-				);
-				layout.setVerticalGroup(
-						layout.createSequentialGroup()
-							.addGroup(layout.createParallelGroup()
-									.addComponent(findReportLabel)
-									.addComponent(findReportField)
-									.addComponent(browseButton))
-							.addGroup(layout.createParallelGroup()
-									.addComponent(reportList)
-									.addComponent(addReportButton)
-									.addComponent(removeReportButton))
-				);
-		layout.linkSize(SwingConstants.HORIZONTAL, browseButton, addReportButton, removeReportButton);
-		
+		reportsPanel.add(northPanel, BorderLayout.NORTH);
+		reportsPanel.add(centerPanel, BorderLayout.CENTER);
+		reportsPanel.add(eastPanel, BorderLayout.EAST);
 	}
 	
 	private class ReportListSelectionListener implements ListSelectionListener {
