@@ -22,3 +22,14 @@
 /UserGUI$RemoveASINButtonListener.class
 /UserGUI$CancelButtonListener.class
 /UserGUI$CreateButtonListener.class
+/ReportsPanel.class
+/AuthorsPanel.class
+/ASINsPanel.class
+/StatusPanel.class
+/ReportsPanel$AddReportButtonListener.class
+/ReportsPanel$BrowseButtonListener.class
+/ReportsPanel$RemoveReportButtonListener.class
+/ReportsPanel$ReportListSelectionListener.class
+/AuthorsPanel$AddAuthorButtonListener.class
+/AuthorsPanel$AuthorNameListSelectionListener.class
+/AuthorsPanel$RemoveAuthorButtonListener.class
