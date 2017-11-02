@@ -8,8 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class UserGUI extends JFrame {
-	static private final String newline = "\n";
-	private JFileChooser fileChooser;
+	private final JFileChooser fileChooser = new JFileChooser();
 	private JButton browseButton, 
 				addReportButton, 
 				removeReportButton, 
@@ -111,12 +110,36 @@ public class UserGUI extends JFrame {
 	private class BrowseButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			//Handle open button action.
+			if (e.getSource() == browseButton) {
+				int returnVal = fileChooser.showOpenDialog(UserGUI.this);
+	 
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					//Handle opening file.
+					findReportField.setText(file.getPath());
+				} else {
+					JOptionPane.showMessageDialog(null, "Open command cancelled by user.\n");
+				}
+	 
+			//Handle save button action.
+			} else if (e.getSource() == addReportButton) {
+				int returnVal = fileChooser.showSaveDialog(UserGUI.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					//handle saving the file.
+					JOptionPane.showMessageDialog(null, "Saving: " + file.getName() + ".\n");
+				} else {
+					JOptionPane.showMessageDialog(null, "Save command cancelled by user.\n");
+				}
+			}
 		}
 	}
 
 	private class AddReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			JOptionPane.showMessageDialog(null, "Add Report Button Pressed");
 		}
 	}
 
