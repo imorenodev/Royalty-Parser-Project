@@ -33,3 +33,8 @@
 /AuthorsPanel$AddAuthorButtonListener.class
 /AuthorsPanel$AuthorNameListSelectionListener.class
 /AuthorsPanel$RemoveAuthorButtonListener.class
+/ASINsPanel$ASINsListSelectionListener.class
+/ASINsPanel$AddASINButtonListener.class
+/ASINsPanel$RemoveASINButtonListener.class
+/StatusPanel$CancelButtonListener.class
+/StatusPanel$CreateButtonListener.class
