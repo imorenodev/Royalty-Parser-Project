@@ -28,7 +28,7 @@ public class UserGUI extends JFrame {
 	private JTextField findReportField,
 			enterAuthorNameField,
 			enterASINField;
-	private JList reportList,
+	private JList<String> reportList,
 			authorNameList,
 			ASINsList;
 	private JScrollPane reportListScrollPane,
@@ -84,7 +84,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(browseButton);
 		northPanel.add(addReportButton);
 
-		reportList = new JList(new String[] {"Report 1", "Report 2", "Report 3", "Report 4", "Report 5", "Report 6", "Report 7", "Report 8"});
+		reportList = new JList<String>(new DefaultListModel<String>());
 		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		reportList.addListSelectionListener(new ReportListSelectionListener());
 		reportList.setVisibleRowCount(5);
@@ -139,6 +139,10 @@ public class UserGUI extends JFrame {
 	private class AddReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			String findReportFieldText = findReportField.getText();
+			if (findReportFieldText != null) {
+				((DefaultListModel)reportList.getModel()).addElement(findReportFieldText);
+			}
 			JOptionPane.showMessageDialog(null, "Add Report Button Pressed");
 		}
 	}
