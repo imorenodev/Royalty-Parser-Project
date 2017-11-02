@@ -11,30 +11,30 @@ public class UserGUI extends JFrame {
 	static private final String newline = "\n";
 	private JFileChooser fileChooser;
 	private JButton browseButton, 
-			addReportButton, 
-			removeReportButton, 
-			addAuthorButton, 
-			removeAuthorButton, 
-			addASINButton, 
-			removeASINButton,
-			createButton,
-			cancelButton;
-	private JPanel reportsPanel;
-	private JPanel authorsPanel;
-	private JPanel ASINsPanel;
-	private JPanel ButtonsPanel;
-	private JLabel findReportLabel;
-	private JLabel enterAuthorNameLabel;
-	private JLabel enterASINLabel;
-	private JTextField findReportField;
-	private JTextField enterAuthorNameField;
-	private JTextField enterASINField;
-	private JList reportList;
-	private JScrollPane reportListScrollPane;
-	private JList authorNameList;
-	private JScrollPane authorNameListScrollPane;
-	private JList ASINsList;
-	private JScrollPane ASINsListScrollPane;
+				addReportButton, 
+				removeReportButton, 
+				addAuthorButton, 
+				removeAuthorButton, 
+				addASINButton, 
+				removeASINButton,
+				createButton,
+				cancelButton;
+	private JPanel reportsPanel,
+			authorsPanel,
+			ASINsPanel,
+			buttonsPanel;
+	private JLabel findReportLabel,
+			enterAuthorNameLabel,
+			enterASINLabel;
+	private JTextField findReportField,
+			enterAuthorNameField,
+			enterASINField;
+	private JList reportList,
+			authorNameList,
+			ASINsList;
+	private JScrollPane reportListScrollPane,
+			authorNameListScrollPane,
+			ASINsListScrollPane;
 
 	/**
 	 * Constructor for UserGUI
@@ -54,7 +54,7 @@ public class UserGUI extends JFrame {
 		frame.add(reportsPanel);
 		frame.add(authorsPanel);
 		frame.add(ASINsPanel);
-		frame.add(ButtonsPanel);
+		frame.add(buttonsPanel);
  
 		//Display the window.
 		frame.pack();
@@ -68,7 +68,7 @@ public class UserGUI extends JFrame {
 		
 		reportsPanel = new JPanel();
 		reportsPanel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
 				));
 		reportsPanel.setLayout(new BorderLayout());
@@ -134,7 +134,7 @@ public class UserGUI extends JFrame {
 		
 		authorsPanel = new JPanel();
 		authorsPanel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Author Profiles")
 				));
 		authorsPanel.setLayout(new BorderLayout());
@@ -190,7 +190,7 @@ public class UserGUI extends JFrame {
 		
 		ASINsPanel = new JPanel();
 		ASINsPanel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(20, 20, 20, 20), 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Author's ASINs")
 				));
 		ASINsPanel.setLayout(new BorderLayout());
@@ -240,16 +240,29 @@ public class UserGUI extends JFrame {
 	
 	
 	private void buildButtonsPanel() {
-		ButtonsPanel = new JPanel();
-		ButtonsPanel.setLayout(new FlowLayout());
+		buttonsPanel = new JPanel(new BorderLayout());
+		buttonsPanel.setBackground(Color.LIGHT_GRAY);
+		buttonsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Status Messages")
+				));
+		JPanel buttonsContainer = new JPanel(new FlowLayout());
+		buttonsContainer.setBackground(Color.LIGHT_GRAY);
+		JPanel logContainer = new JPanel(new FlowLayout());
+		logContainer.setBackground(Color.LIGHT_GRAY);
+		JTextArea logTextBox = new JTextArea(5, 60);
+		logContainer.add(logTextBox);
 
 		createButton = new JButton("Create Reports");
 		createButton.addActionListener(new CreateButtonListener());
-		ButtonsPanel.add(createButton);
+		buttonsContainer.add(createButton);
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new CancelButtonListener());
-		ButtonsPanel.add(cancelButton);
+		buttonsContainer.add(cancelButton);
+		
+		buttonsPanel.add(logContainer, BorderLayout.CENTER);
+		buttonsPanel.add(buttonsContainer, BorderLayout.SOUTH);
 	}
 	
 	private class CreateButtonListener implements ActionListener {
