@@ -40,16 +40,7 @@ public class UserGUI extends JFrame {
 	 * Constructor for UserGUI
 	 */
 	public UserGUI() {
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-		        createAndShowGUI();
-		    }
-		});
-
-	}
-
-	private void createAndShowGUI() {
-			//Create the window.
+		//Create the window.
 		JFrame frame = new JFrame("Royalty Parser");
 		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,8 +53,9 @@ public class UserGUI extends JFrame {
  
 		//Display the window.
 		frame.pack();
-		frame.setVisible(true);	
+		frame.setVisible(true);
 	}
+
 	
 	
 	
