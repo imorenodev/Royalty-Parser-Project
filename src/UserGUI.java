@@ -104,6 +104,7 @@ public class UserGUI extends JFrame {
 	private class ReportListSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
+			JOptionPane.showMessageDialog(null,e.getFirstIndex());
 		}
 	}
 	
@@ -150,6 +151,8 @@ public class UserGUI extends JFrame {
 	private class RemoveReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			//((DefaultListModel)reportList.getModel()).addElement(findReportFieldText);
+			JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
 		}
 	} // END REPORT PANEL
 	
