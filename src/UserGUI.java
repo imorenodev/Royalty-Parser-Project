@@ -142,7 +142,9 @@ public class UserGUI extends JFrame {
 			// handle browse button click event
 			String findReportFieldText = findReportField.getText();
 			if (findReportFieldText != null) {
+				// add path string to reportList
 				((DefaultListModel)reportList.getModel()).addElement(findReportFieldText);
+				findReportField.setText(""); // clear the findReportField text box
 			}
 			JOptionPane.showMessageDialog(null, "Add Report Button Pressed");
 		}
@@ -151,7 +153,8 @@ public class UserGUI extends JFrame {
 	private class RemoveReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			//((DefaultListModel)reportList.getModel()).addElement(findReportFieldText);
+			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+			reportListModel.removeElementAt(reportList.getSelectedIndex());
 			JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
 		}
 	} // END REPORT PANEL
