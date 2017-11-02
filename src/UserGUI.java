@@ -45,12 +45,14 @@ public class UserGUI extends JFrame {
 		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		buildReportsPanel();
+		buildAuthorProfilesPanel();
 		buildASINsPanel();
 		buildButtonsPanel();
  
 		//Add content to the window.
-		frame.add(new ReportsPanel().getReportsPanel());
-		frame.add(new AuthorsPanel().getAuthorsPanel());
+		frame.add(reportsPanel);
+		frame.add(authorsPanel);
 		frame.add(ASINsPanel);
 		frame.add(buttonsPanel);
  
@@ -59,10 +61,126 @@ public class UserGUI extends JFrame {
 		frame.setVisible(true);
 	}
 
+	private void buildReportsPanel() {
+		JPanel northPanel = new JPanel();
+		JPanel centerPanel = new JPanel();
+		JPanel eastPanel = new JPanel(new GridLayout(3,1));
+		
+		reportsPanel = new JPanel();
+		reportsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
+				));
+		reportsPanel.setLayout(new BorderLayout());
+
+		findReportLabel = new JLabel("Find Report");
+		findReportField = new JTextField(40);
+		browseButton = new JButton("Browse");
+		browseButton.addActionListener(new BrowseButtonListener());
+		addReportButton = new JButton("Add Report");
+		addReportButton.addActionListener(new AddReportButtonListener());
+
+		northPanel.add(findReportLabel);
+		northPanel.add(findReportField);
+		northPanel.add(browseButton);
+		northPanel.add(addReportButton);
+
+		reportList = new JList(new String[] {"Report 1", "Report 2", "Report 3", "Report 4", "Report 5", "Report 6", "Report 7", "Report 8"});
+		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		reportList.addListSelectionListener(new ReportListSelectionListener());
+		reportList.setVisibleRowCount(5);
+		reportListScrollPane = new JScrollPane(reportList);
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(reportListScrollPane, BorderLayout.CENTER);
+
+		removeReportButton = new JButton("Remove Report");
+		removeReportButton.addActionListener(new RemoveReportButtonListener());
+		eastPanel.add(removeReportButton);
+		
+		reportsPanel.add(northPanel, BorderLayout.NORTH);
+		reportsPanel.add(centerPanel, BorderLayout.CENTER);
+		reportsPanel.add(eastPanel, BorderLayout.EAST);
+	}
 	
+	private class ReportListSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			// handle list selection event
+		}
+	}
+	
+	private class BrowseButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class AddReportButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class RemoveReportButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} // END REPORT PANEL
 	
  
+	private void buildAuthorProfilesPanel() {
+		JPanel northPanel = new JPanel();
+		JPanel centerPanel = new JPanel();
+		JPanel eastPanel = new JPanel(new GridLayout(3,1));
+		
+		authorsPanel = new JPanel();
+		authorsPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Author Profiles")
+				));
+		authorsPanel.setLayout(new BorderLayout());
+
+		enterAuthorNameLabel = new JLabel("Enter New Author");
+		enterAuthorNameField = new JTextField(40);
+		addAuthorButton = new JButton("Add Author");
+		addAuthorButton.addActionListener(new AddAuthorButtonListener());
+		northPanel.add(enterAuthorNameLabel);
+		northPanel.add(enterAuthorNameField);
+		northPanel.add(addAuthorButton);
+
+		authorNameList = new JList(new String[] {"Ian", "Joey", "Kushal", "Andrea", "Yusef", "One", "Two", "Three"});
+		authorNameList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
+		authorNameList.setVisibleRowCount(5);
+		authorNameListScrollPane = new JScrollPane(authorNameList);
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(authorNameListScrollPane, BorderLayout.CENTER);
+
+		removeAuthorButton = new JButton("Remove Author");
+		removeAuthorButton.addActionListener(new RemoveAuthorButtonListener());
+		eastPanel.add(removeAuthorButton);
+		
+		authorsPanel.add(northPanel, BorderLayout.NORTH);
+		authorsPanel.add(centerPanel, BorderLayout.CENTER);
+		authorsPanel.add(eastPanel, BorderLayout.EAST);
+	}
 	
+	private class AuthorNameListSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent e) {
+			// handle list selection event
+		}
+	}
+	
+	private class AddAuthorButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	}
+
+	private class RemoveAuthorButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} // END AUTHOR PROFILES
 
 
 	private void buildASINsPanel() {
