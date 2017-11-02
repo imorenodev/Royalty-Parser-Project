@@ -141,9 +141,14 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			String findReportFieldText = findReportField.getText();
+			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 			if (findReportFieldText != null) {
-				// add path string to reportList
-				((DefaultListModel)reportList.getModel()).addElement(findReportFieldText);
+				// if report is not already present, add its path string to reportList
+				if (!reportListModel.contains(findReportFieldText)) {
+					reportListModel.addElement(findReportFieldText);
+				} else {
+					JOptionPane.showMessageDialog(null, "ERROR Report Already Added");
+				}
 				findReportField.setText(""); // clear the findReportField text box
 			}
 			JOptionPane.showMessageDialog(null, "Add Report Button Pressed");
