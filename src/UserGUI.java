@@ -55,6 +55,16 @@ public class UserGUI extends JFrame {
 		
 		// load pre-saved authors
 		authorsList = presavedAuthorsList;
+		
+		CurrencyConverter.conversionMap.put("USD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("CAD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("GBP", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("EUR", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("BRL", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("INR", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("JPY", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("AUD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("MXN", Double.valueOf(1.0));
 
 		buildReportsPanel();
 		buildAuthorProfilesPanel();

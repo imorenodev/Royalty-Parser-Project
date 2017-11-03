@@ -61,6 +61,7 @@ public class ReportGenerator {
 
 		int numberOfRows = bookList.size() + 3; 
 		int numberOfColumns = 0;
+		double royaltyTotal = 0.0;
 		Map<String, String> bookDataMap;
 
 		// initialize header row in case bookList is empty
@@ -100,6 +101,11 @@ public class ReportGenerator {
 		for (int c = 0; c < numberOfColumns; c++) {
 			cell = row.createCell(c);
 			cell.setCellValue(headerRow.get(c));
+			
+			if ((c + 1) == numberOfColumns) {
+				cell = row.createCell(c+1);
+				cell.setCellValue("Royalty (USD)");
+			}
 		}
 		
 		// iterating r+3 number of rows
@@ -112,8 +118,27 @@ public class ReportGenerator {
 			for (int c = 0;c < numberOfColumns; c++ )
 			{
 				cell = row.createCell(c);
-	
 				cell.setCellValue(bookDataMap.get(headerRow.get(c)));
+				
+				// if last row then calculate Royalty in (USD)
+				if ((c + 1) == numberOfColumns) {
+					String currencyType = bookDataMap.get("Currency");
+					double royalty = Double.parseDouble(bookDataMap.get("Royalty"));
+					double convertedRoyalty = CurrencyConverter.getConversion(currencyType, royalty);
+					cell = row.createCell(c+1);
+					cell.setCellValue(convertedRoyalty);
+					royaltyTotal += convertedRoyalty;
+				}
+			}
+			// add the total royalty at end of report
+			if ((r+1) == numberOfRows) {
+				row = sheet.createRow(r+1);
+
+				cell = row.createCell(0);
+				cell.setCellValue("Royalty Total");
+
+				cell = row.createCell(numberOfColumns);
+				cell.setCellValue(royaltyTotal);
 			}
 		}
 
