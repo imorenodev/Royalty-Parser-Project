@@ -20,6 +20,7 @@ public class UserGUI extends JFrame {
 			addReportButton, 
 			removeReportButton, 
 			saveCurrencyConversionButton,
+			clearCurrencyConversionButton,
 			addAuthorButton, 
 			removeAuthorButton, 
 			addASINButton, 
@@ -207,36 +208,72 @@ public class UserGUI extends JFrame {
 				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Currency Conversions")
 				));
-		currencyPanel.setLayout(new GridLayout(2,4));
+		currencyPanel.setLayout(new GridLayout(3,4));
 
-		CADLabel = new JLabel("Canadian Dollar (CAD)");
-		GBPLabel = new JLabel("Britian Pounds (GBP)");
+		CADLabel = new JLabel("Candian Dollar (CAD)");
+		GBPLabel = new JLabel("British Pound (GBP)");
 		BRLLabel = new JLabel("Brazilian Real (BRL)");
 		INRLabel = new JLabel("Indian Rupee (INR)");
 		MXNLabel = new JLabel("Mexican Peso (MXN)");
 		EURLabel = new JLabel("Euro (EUR)");
 		JPYLabel = new JLabel("Japanese Yen (JPY)");
 		AUDLabel = new JLabel("Australian Dollar (AUD)");
-		CADField = new JTextField(5);
-		GBPField = new JTextField(5);
-		BRLField = new JTextField(5);
-		INRField = new JTextField(5);
-		MXNField = new JTextField(5);
-		EURField = new JTextField(5);
-		JPYField = new JTextField(5);
-		AUDField = new JTextField(5);
+		CADField = new JTextField(3);
+		GBPField = new JTextField(3);
+		BRLField = new JTextField(3);
+		INRField = new JTextField(3);
+		MXNField = new JTextField(3);
+		EURField = new JTextField(3);
+		JPYField = new JTextField(3);
+		AUDField = new JTextField(3);
 		saveCurrencyConversionButton = new JButton("Save Conversions");
 		saveCurrencyConversionButton.addActionListener(new SaveCurrencyConversionButtonListener());
+		clearCurrencyConversionButton = new JButton("Clear All");
+		clearCurrencyConversionButton.addActionListener(new ClearCurrencyConversionButtonListener());
+		
+		JPanel cadPanel = buildCurrencyPanel(CADLabel, CADField);
+		JPanel gbpPanel = buildCurrencyPanel(GBPLabel, GBPField);
+		JPanel brlPanel = buildCurrencyPanel(BRLLabel, BRLField);
+		JPanel incPanel = buildCurrencyPanel(INRLabel, INRField);
+		JPanel mxnPanel = buildCurrencyPanel(MXNLabel, MXNField);
+		JPanel eurPanel = buildCurrencyPanel(EURLabel, EURField);
+		JPanel jpyPanel = buildCurrencyPanel(JPYLabel, JPYField);
+		JPanel audPanel = buildCurrencyPanel(AUDLabel, AUDField);
+		JPanel saveCurrencyButtonPanel = new JPanel();
+		saveCurrencyButtonPanel.setSize(new Dimension(10, 5));
+		saveCurrencyButtonPanel.add(saveCurrencyConversionButton);
+		JPanel clearCurrencyButtonPanel = new JPanel();
+		clearCurrencyButtonPanel.setSize(new Dimension(10, 5));
+		clearCurrencyButtonPanel.add(clearCurrencyConversionButton);
 
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
-		currencyPanel.add(CADLabel);
+		currencyPanel.add(cadPanel);
+		currencyPanel.add(gbpPanel);
+		currencyPanel.add(brlPanel);
+		currencyPanel.add(incPanel);
+		currencyPanel.add(mxnPanel);
+		currencyPanel.add(eurPanel);
+		currencyPanel.add(jpyPanel);
+		currencyPanel.add(audPanel);
+		currencyPanel.add(clearCurrencyButtonPanel);
+		currencyPanel.add(new JPanel()); // empty cell
+		currencyPanel.add(new JPanel()); // empty cell
+		currencyPanel.add(saveCurrencyButtonPanel);
 	}
 	
+	private JPanel buildCurrencyPanel(JLabel label, JTextField field) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+		panel.add(label);
+		panel.add(field);
+		return panel;
+	}
+	
+	private class ClearCurrencyConversionButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} 
+
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
@@ -332,12 +369,14 @@ public class UserGUI extends JFrame {
 				if (!authorListModel.contains(authorName)) {
 					authorListModel.addElement(authorName);
 					authorToASINMap.put(authorName, new ArrayList<String>());
+					logTextBox.append("Added Author: " + authorName + "\n");
 				} else {
 					logTextBox.append("ERROR Author Name Already Added\n");
 				}
 				enterAuthorNameField.setText(""); // clear the enterAuthorNameField text box
+			} else {
+				logTextBox.append("Enter an Author Name\n");
 			}
-			logTextBox.append("Added Author: " + authorName + "\n");
 		}
 	}
 

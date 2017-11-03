@@ -35,3 +35,5 @@
 /UserGUI$BrowseButtonListener$RemoveReportButtonListener.class
 /CurrencyConverter.class
 /UserGUI$SaveCurrencyConversionButtonListener.class
+/UserGUI$clearCurrencyConversionButtonListener.class
+/UserGUI$ClearCurrencyConversionButtonListener.class
