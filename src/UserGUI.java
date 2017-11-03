@@ -8,21 +8,23 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class UserGUI extends JFrame {
 	private final JFileChooser fileChooser = new JFileChooser();
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	private ArrayList<Author> authorsList = new ArrayList<>();
+	private HashSet<File> reportFiles = new HashSet<>(); // use HashSet to maintain list of unique files
 	private JButton browseButton, 
-				addReportButton, 
-				removeReportButton, 
-				addAuthorButton, 
-				removeAuthorButton, 
-				addASINButton, 
-				removeASINButton,
-				createButton,
-				cancelButton;
+			addReportButton, 
+			removeReportButton, 
+			addAuthorButton, 
+			removeAuthorButton, 
+			addASINButton, 
+			removeASINButton,
+			createButton,
+			cancelButton;
 	private JPanel reportsPanel,
 			authorsPanel,
 			ASINsPanel,
@@ -157,6 +159,8 @@ public class UserGUI extends JFrame {
 				// if report is not already present, add its path string to reportList
 				if (!reportListModel.contains(reportPath)) {
 					reportListModel.addElement(reportPath);
+					// add the report file to the reportFiles set
+					reportFiles.add(fileChooser.getSelectedFile());
 					logTextBox.append("Added Report: " + reportPath + "\n");
 				} else {
 					logTextBox.append("ERROR Report Already Added\n");
@@ -435,6 +439,11 @@ public class UserGUI extends JFrame {
 	private class CreateButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			if (!authorToASINMap.isEmpty() && !reportFiles.isEmpty()) {
+				ReportGenerator.createReport(authorToASINMap, reportFiles);
+			} else {
+				logTextBox.append("ERROR CANNOT CREATE REPORTS");
+			}
 		}
 	}
 
