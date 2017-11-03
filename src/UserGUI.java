@@ -223,16 +223,25 @@ public class UserGUI extends JFrame {
 			// handle list selection event
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
 			DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
-			String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
-			// check to see if author has any saved ASINs
-			ASINsListModel.clear();
-			if (authorToASINMap.containsKey(authorName)) {
-				// get the list of saved ASINs
-				ArrayList<String> asins = authorToASINMap.get(authorName);
-				for (String aName : asins) {
-					// add each ASIN to the authorListModel
-					ASINsListModel.addElement(aName);
+			int selectedIndex = authorNameList.getSelectedIndex();
+			
+			if (selectedIndex >= 0) {
+				String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
+				// check to see if author has any saved ASINs
+				ASINsListModel.clear();
+
+				if (authorName != null) { // check to make sure author isn't already previously deleted
+					if (authorToASINMap.containsKey(authorName)) {
+						// get the list of saved ASINs
+						ArrayList<String> asins = authorToASINMap.get(authorName);
+						for (String aName : asins) {
+							// add each ASIN to the authorListModel
+							ASINsListModel.addElement(aName);
+						}
+					}
 				}
+			} else {
+				logTextBox.append("ERROR: No Author Selected\n");
 			}
 		}
 	}
@@ -262,6 +271,7 @@ public class UserGUI extends JFrame {
 			// handle browse button click event
 			if (!authorNameList.isSelectionEmpty()) {
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
 				// if the list is not empty and there is an author name selected
@@ -270,6 +280,8 @@ public class UserGUI extends JFrame {
 					authorToASINMap.remove(authorName);
 					// remove author name from authorNameList
 					authorListModel.removeElementAt(selectedAuthorIndex);
+					// clear ASINs from the ASINsList
+					ASINsListModel.clear(); 
 					logTextBox.append("Removed Author: " + authorName + "\n");
 				} else {
 					logTextBox.append("No Author Selected\n");
