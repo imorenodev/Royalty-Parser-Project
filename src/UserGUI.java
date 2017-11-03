@@ -37,7 +37,8 @@ public class UserGUI extends JFrame {
 			ASINsList;
 	private JScrollPane reportListScrollPane,
 			authorNameListScrollPane,
-			ASINsListScrollPane;
+			ASINsListScrollPane,
+			buttonsPanelScrollPane;
 	private JTextArea logTextBox;
 
 	/**
@@ -171,10 +172,10 @@ public class UserGUI extends JFrame {
 				if (!reportListModel.isEmpty()) {
 					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
 					reportListModel.removeElementAt(selectedReportIndex);
-					logTextBox.append("Removed Report" + reportPath + "\n");
+					logTextBox.append("Removed Report: " + reportPath + "\n");
 				}
 			} else {
-				logTextBox.append("No Report Selected");
+				logTextBox.append("No Report Selected\n");
 			}
 		}
 	} // END REPORT PANEL
@@ -220,19 +221,19 @@ public class UserGUI extends JFrame {
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
-			/**
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+			DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 			String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
 			// check to see if author has any saved ASINs
+			ASINsListModel.clear();
 			if (authorToASINMap.containsKey(authorName)) {
 				// get the list of saved ASINs
-				ArrayList<String> authors = authorToASINMap.get(authorName);
-				for (String aName : authors) {
+				ArrayList<String> asins = authorToASINMap.get(authorName);
+				for (String aName : asins) {
 					// add each ASIN to the authorListModel
-					authorListModel.addElement(aName);
+					ASINsListModel.addElement(aName);
 				}
 			}
-			*/
 		}
 	}
 	
@@ -248,7 +249,7 @@ public class UserGUI extends JFrame {
 					authorListModel.addElement(authorName);
 					authorToASINMap.put(authorName, new ArrayList<String>());
 				} else {
-					logTextBox.append("ERROR Author Name Already Added");
+					logTextBox.append("ERROR Author Name Already Added\n");
 				}
 				enterAuthorNameField.setText(""); // clear the enterAuthorNameField text box
 			}
@@ -271,10 +272,10 @@ public class UserGUI extends JFrame {
 					authorListModel.removeElementAt(selectedAuthorIndex);
 					logTextBox.append("Removed Author: " + authorName + "\n");
 				} else {
-					logTextBox.append("No Author Selected");
+					logTextBox.append("No Author Selected\n");
 				}
 			} else {
-				logTextBox.append("No Author Selected");
+				logTextBox.append("No Author Selected\n");
 			}
 		}
 	} // END AUTHOR PROFILES
@@ -337,18 +338,18 @@ public class UserGUI extends JFrame {
 				if (asins != null && ASIN != null && !ASIN.equals("")) {
 					if (!asins.contains(ASIN)) {
 						asins.add(ASIN);
-						authorToASINMap.put(authorName, asins);
+						//authorToASINMap.put(authorName, asins);
 						ASINListModel.addElement(ASIN);
 						logTextBox.append("Added ASIN: " + ASIN + "\n");
 					} else {
-						logTextBox.append("ERROR ASIN Already Present");
+						logTextBox.append("ERROR ASIN Already Present\n");
 					}
 					enterASINField.setText("");
 				} else {
-					logTextBox.append("Please Enter an ASIN");
+					logTextBox.append("Please Enter an ASIN\n");
 				}
 			} else {
-				logTextBox.append("Please Select an Author");
+				logTextBox.append("Please Select an Author\n");
 			}
 		}
 	}
@@ -368,7 +369,7 @@ public class UserGUI extends JFrame {
 				ArrayList<String> asins = authorToASINMap.get(authorName); // get authors ASIN list
 				
 				asins.remove(ASIN); // remove ASIN from list
-				authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
+				//authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
 				ASINListModel.removeElementAt(selectedASINIndex);
 				logTextBox.append("Removed ASIN: " + ASIN + "\n");
 			}
@@ -388,7 +389,8 @@ public class UserGUI extends JFrame {
 		JPanel logContainer = new JPanel(new FlowLayout());
 		logContainer.setBackground(Color.LIGHT_GRAY);
 		logTextBox = new JTextArea(5, 60);
-		logContainer.add(logTextBox);
+		buttonsPanelScrollPane = new JScrollPane(logTextBox);
+		logContainer.add(buttonsPanelScrollPane);
 
 		createButton = new JButton("Create Reports");
 		createButton.addActionListener(new CreateButtonListener());
@@ -409,8 +411,10 @@ public class UserGUI extends JFrame {
 	}
 
 	private class CancelButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			System.exit(0);
 		}
-	} //END ASINs 
+	} //END ButtonsPanel
 }
