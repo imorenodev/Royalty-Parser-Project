@@ -242,6 +242,7 @@ public class UserGUI extends JFrame {
 				// if author name is not already present, add it to authorNamesList
 				if (!authorListModel.contains(authorName)) {
 					authorListModel.addElement(authorName);
+					authorToASINMap.put(authorName, new ArrayList<String>());
 				} else {
 					JOptionPane.showMessageDialog(null, "ERROR Author Name Already Added");
 				}
@@ -295,7 +296,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(enterASINField);
 		northPanel.add(addASINButton);
 
-		ASINsList = new JList(new String[] {"AS1234", "AS5678", "AS91012123", "AS123142", "AS9876", "AS65432", "AS4313123", "AS990002"});
+		ASINsList = new JList<String>(new DefaultListModel<String>());
 		ASINsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		ASINsList.addListSelectionListener(new ASINsListSelectionListener());
 		ASINsList.setVisibleRowCount(5);
@@ -321,6 +322,29 @@ public class UserGUI extends JFrame {
 	private class AddASINButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			if (!authorNameList.isSelectionEmpty()) {
+				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
+				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
+				String ASIN = enterASINField.getText();
+				ArrayList<String> asins = authorToASINMap.get(authorName);
+				
+				if (asins != null && ASIN != null && !ASIN.equals("")) {
+					if (!asins.contains(ASIN)) {
+						JOptionPane.showMessageDialog(null, "Entered second if");
+						asins.add(ASIN);
+						authorToASINMap.put(authorName, asins);
+						ASINListModel.addElement(ASIN);
+					} else {
+						JOptionPane.showMessageDialog(null, "ERROR ASIN Already Present");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null,  "Please Enter an ASIN");
+				}
+			} else {
+				JOptionPane.showMessageDialog(null,  "Please Select an Author");
+			}
 		}
 	}
 
