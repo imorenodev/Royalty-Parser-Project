@@ -442,7 +442,7 @@ public class UserGUI extends JFrame {
 			if (!authorToASINMap.isEmpty() && !reportFiles.isEmpty()) {
 				ReportGenerator.createReport(authorToASINMap, reportFiles);
 			} else {
-				logTextBox.append("ERROR CANNOT CREATE REPORTS");
+				logTextBox.append("ERROR CANNOT CREATE REPORTS\n");
 			}
 		}
 	}

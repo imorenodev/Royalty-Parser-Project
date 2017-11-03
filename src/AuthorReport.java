@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class AuthorReport {
 	List<Book> authorsBookList = new ArrayList<>();
 	String reportName = "";
@@ -17,7 +19,9 @@ public class AuthorReport {
 	private void buildAuthorsBookList(List<Book> rawDataBookList, List<String> asins) {
 		for (String asin : asins) {
 			for (Book book : rawDataBookList) {
-				if (book.getASIN().equals(asin)) authorsBookList.add(book);
+				if (book.getASIN().equals(asin)) {
+					authorsBookList.add(book);
+				}
 			}
 		}
 	}
