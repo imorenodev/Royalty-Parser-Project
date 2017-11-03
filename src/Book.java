@@ -19,7 +19,7 @@ public class Book {
 			   AvgDeliveryCost ="",
 			   Royalty ="";    		
 		
-	public Book(Map<String, String> bookData, int columnNum) {
+	public Book(Map<String, String> bookData) {
 		bookDataMap = new HashMap<String,String>(bookData);
 		Title = bookData.get("Title");
 		Author = bookData.get("Author");

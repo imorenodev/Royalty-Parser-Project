@@ -134,17 +134,6 @@ public class UserGUI extends JFrame {
 				} else {
 					logTextBox.append("Open command cancelled by user.\n");
 				}
-	 
-			//Handle save button action.
-			} else if (e.getSource() == addReportButton) {
-				int returnVal = fileChooser.showSaveDialog(UserGUI.this);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-					//handle saving the file.
-					logTextBox.append("Saving: " + file.getName() + ".\n");
-				} else {
-					logTextBox.append("Save command cancelled by user.\n");
-				}
 			}
 		}
 	}

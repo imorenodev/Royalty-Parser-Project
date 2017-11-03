@@ -23,3 +23,13 @@
 /UserGUI$CancelButtonListener.class
 /UserGUI$CreateButtonListener.class
 /ReportGenerator.class
+/UserGUI$BrowseButtonListener$ASINsListSelectionListener.class
+/UserGUI$BrowseButtonListener$AddASINButtonListener.class
+/UserGUI$BrowseButtonListener$AddAuthorButtonListener.class
+/UserGUI$BrowseButtonListener$AddReportButtonListener.class
+/UserGUI$BrowseButtonListener$AuthorNameListSelectionListener.class
+/UserGUI$BrowseButtonListener$CancelButtonListener.class
+/UserGUI$BrowseButtonListener$CreateButtonListener.class
+/UserGUI$BrowseButtonListener$RemoveASINButtonListener.class
+/UserGUI$BrowseButtonListener$RemoveAuthorButtonListener.class
+/UserGUI$BrowseButtonListener$RemoveReportButtonListener.class

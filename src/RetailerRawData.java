@@ -63,7 +63,7 @@ public class RetailerRawData {
 							bookData.put(headerRow.getCell(j).toString(), row.getCell(j).toString());
 						}
 					}
-					bookList.add(new Book(bookData, row.getLastCellNum()));
+					bookList.add(new Book(bookData));
 	         }
 	         rowIterator.remove();
 	     }

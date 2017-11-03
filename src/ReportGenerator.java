@@ -26,13 +26,11 @@ public class ReportGenerator {
 
 	public static void createReport(Map<String, ArrayList> authorsAndASINs, HashSet<File> reports) {
 		Set authors = authorsAndASINs.keySet();
-		ArrayList<File> reportFiles = new ArrayList<>();
+		ArrayList<Book> bookData = new ArrayList<>();
 		
 		for (File report : reports) {
-			reportFiles.add(report);
+			bookData.addAll((ArrayList)RetailerRawData.getData(report.getPath()));
 		}
-		
-		ArrayList<Book> bookData = (ArrayList)RetailerRawData.getData(reportFiles.get(0).getPath());
 		
 		String authorName = "";
 		String reportName = "";
@@ -68,9 +66,22 @@ public class ReportGenerator {
 		// initialize header row in case bookList is empty
 		ArrayList<String> headerRow = new ArrayList<>(); 
 
-		if (bookList.get(0) != null) { // if there's at least one book entry then save it's keys as the column headers
-			headerRow.addAll(bookList.get(0).getBookDataMap().keySet());
-		}
+		headerRow.add("Title");
+		headerRow.add("Author");
+		headerRow.add("ASIN"); 
+		headerRow.add("MarketPlace");
+		headerRow.add("Units Sold");
+		headerRow.add("Units Refunded"); 
+		headerRow.add("Net Units Sold");
+		headerRow.add("Royalty Type");
+		headerRow.add("Transaction Type");
+		headerRow.add("Currency");
+		headerRow.add("Avg. List Price Without Tax");
+		headerRow.add("Avg. Offer Price Without Tax");
+		headerRow.add("Avg. File Size");
+		headerRow.add("Avg. Delivery Cost");
+		headerRow.add("Royalty");
+		
 		
 		numberOfColumns = headerRow.size();
 		
