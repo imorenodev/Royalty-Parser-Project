@@ -140,12 +140,13 @@ public class UserGUI extends JFrame {
 	private class AddReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			String findReportFieldText = findReportField.getText();
+			String reportPath = findReportField.getText();
 			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
-			if (findReportFieldText != null) {
+
+			if (reportPath != null && !reportPath.equals("")) {
 				// if report is not already present, add its path string to reportList
-				if (!reportListModel.contains(findReportFieldText)) {
-					reportListModel.addElement(findReportFieldText);
+				if (!reportListModel.contains(reportPath)) {
+					reportListModel.addElement(reportPath);
 				} else {
 					JOptionPane.showMessageDialog(null, "ERROR Report Already Added");
 				}
@@ -187,7 +188,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(enterAuthorNameField);
 		northPanel.add(addAuthorButton);
 
-		authorNameList = new JList(new String[] {"Ian", "Joey", "Kushal", "Andrea", "Yusef", "One", "Two", "Three"});
+		authorNameList = new JList<String>(new DefaultListModel<String>());
 		authorNameList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
 		authorNameList.setVisibleRowCount(5);
@@ -213,6 +214,19 @@ public class UserGUI extends JFrame {
 	private class AddAuthorButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			String authorName = enterAuthorNameField.getText();
+			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+			
+			if (authorName != null && !authorName.equals("")) {
+				// if author name is not already present, add it to authorNamesList
+				if (!authorListModel.contains(authorName)) {
+					authorListModel.addElement(authorName);
+				} else {
+					JOptionPane.showMessageDialog(null, "ERROR Author Name Already Added");
+				}
+				enterAuthorNameField.setText(""); // clear the enterAuthorNameField text box
+			}
+			JOptionPane.showMessageDialog(null,  "Add Author Button Pressed");
 		}
 	}
 
