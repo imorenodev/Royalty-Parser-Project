@@ -19,6 +19,7 @@ public class UserGUI extends JFrame {
 	private JButton browseButton, 
 			addReportButton, 
 			removeReportButton, 
+			saveCurrencyConversionButton,
 			addAuthorButton, 
 			removeAuthorButton, 
 			addASINButton, 
@@ -26,13 +27,20 @@ public class UserGUI extends JFrame {
 			createButton,
 			cancelButton;
 	private JPanel reportsPanel,
+			currencyPanel,
 			authorsPanel,
 			ASINsPanel,
 			buttonsPanel;
 	private JLabel findReportLabel,
+			CADLabel, GBPLabel, BRLLabel,
+			INRLabel, MXNLabel, EURLabel,
+			JPYLabel, AUDLabel,
 			enterAuthorNameLabel,
 			enterASINLabel;
 	private JTextField findReportField,
+			CADField, GBPField, BRLField,
+			INRField, MXNField, EURField,
+			JPYField, AUDField,
 			enterAuthorNameField,
 			enterASINField;
 	private JList<String> reportList,
@@ -56,23 +64,15 @@ public class UserGUI extends JFrame {
 		// load pre-saved authors
 		authorsList = presavedAuthorsList;
 		
-		CurrencyConverter.conversionMap.put("USD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("CAD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("GBP", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("EUR", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("BRL", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("INR", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("JPY", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("AUD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("MXN", Double.valueOf(1.0));
-
 		buildReportsPanel();
+		buildCurrencyPanel();
 		buildAuthorProfilesPanel();
 		buildASINsPanel();
 		buildButtonsPanel();
  
 		//Add content to the window.
 		frame.add(reportsPanel);
+		frame.add(currencyPanel);
 		frame.add(authorsPanel);
 		frame.add(ASINsPanel);
 		frame.add(buttonsPanel);
@@ -81,6 +81,8 @@ public class UserGUI extends JFrame {
 		frame.pack();
 		frame.setVisible(true);
 	}
+
+	
 
 	private void buildReportsPanel() {
 		JPanel northPanel = new JPanel();
@@ -187,6 +189,60 @@ public class UserGUI extends JFrame {
 		}
 	} // END REPORT PANEL
 	
+
+	private void buildCurrencyPanel() {
+		// initialize conversionMap with default values
+		CurrencyConverter.conversionMap.put("USD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("CAD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("GBP", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("EUR", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("BRL", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("INR", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("JPY", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("AUD", Double.valueOf(1.0));
+		CurrencyConverter.conversionMap.put("MXN", Double.valueOf(1.0));
+
+		currencyPanel = new JPanel();
+		currencyPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Currency Conversions")
+				));
+		currencyPanel.setLayout(new GridLayout(2,4));
+
+		CADLabel = new JLabel("Canadian Dollar (CAD)");
+		GBPLabel = new JLabel("Britian Pounds (GBP)");
+		BRLLabel = new JLabel("Brazilian Real (BRL)");
+		INRLabel = new JLabel("Indian Rupee (INR)");
+		MXNLabel = new JLabel("Mexican Peso (MXN)");
+		EURLabel = new JLabel("Euro (EUR)");
+		JPYLabel = new JLabel("Japanese Yen (JPY)");
+		AUDLabel = new JLabel("Australian Dollar (AUD)");
+		CADField = new JTextField(5);
+		GBPField = new JTextField(5);
+		BRLField = new JTextField(5);
+		INRField = new JTextField(5);
+		MXNField = new JTextField(5);
+		EURField = new JTextField(5);
+		JPYField = new JTextField(5);
+		AUDField = new JTextField(5);
+		saveCurrencyConversionButton = new JButton("Save Conversions");
+		saveCurrencyConversionButton.addActionListener(new SaveCurrencyConversionButtonListener());
+
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+		currencyPanel.add(CADLabel);
+	}
+	
+	private class SaveCurrencyConversionButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+		}
+	} // END CURRENCY PANEL
+
  
 	private void buildAuthorProfilesPanel() {
 		JPanel northPanel = new JPanel();
