@@ -6,9 +6,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserGUI extends JFrame {
 	private final JFileChooser fileChooser = new JFileChooser();
+	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	private JButton browseButton, 
 				addReportButton, 
 				removeReportButton, 
@@ -159,10 +163,14 @@ public class UserGUI extends JFrame {
 	private class RemoveReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
-			if (!reportListModel.isEmpty()) {
-				reportListModel.removeElementAt(reportList.getSelectedIndex());
-				JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
+			if (!reportList.isSelectionEmpty()) {
+				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+				if (!reportListModel.isEmpty()) {
+					reportListModel.removeElementAt(reportList.getSelectedIndex());
+					JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "No Reports Selected");
 			}
 		}
 	} // END REPORT PANEL
@@ -208,6 +216,19 @@ public class UserGUI extends JFrame {
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
+			/**
+			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+			String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
+			// check to see if author has any saved ASINs
+			if (authorToASINMap.containsKey(authorName)) {
+				// get the list of saved ASINs
+				ArrayList<String> authors = authorToASINMap.get(authorName);
+				for (String aName : authors) {
+					// add each ASIN to the authorListModel
+					authorListModel.addElement(aName);
+				}
+			}
+			*/
 		}
 	}
 	
@@ -233,6 +254,23 @@ public class UserGUI extends JFrame {
 	private class RemoveAuthorButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			if (!authorNameList.isSelectionEmpty()) {
+				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
+				// if the list is not empty and there is an author name selected
+				if (!authorListModel.isEmpty() && selectedAuthorIndex >= 0) {
+					// remove author and ASIN list from the authorToASINMap
+					authorToASINMap.remove(authorName);
+					// remove author name from authorNameList
+					authorListModel.removeElementAt(selectedAuthorIndex);
+					JOptionPane.showMessageDialog(null, "Remove Author Button Pressed");
+				} else {
+					JOptionPane.showMessageDialog(null, "No Author Selected");
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "No Author Selected");
+			}
 		}
 	} // END AUTHOR PROFILES
 
