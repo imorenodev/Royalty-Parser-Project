@@ -339,6 +339,7 @@ public class UserGUI extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(null, "ERROR ASIN Already Present");
 					}
+					enterASINField.setText("");
 				} else {
 					JOptionPane.showMessageDialog(null,  "Please Enter an ASIN");
 				}
@@ -351,6 +352,21 @@ public class UserGUI extends JFrame {
 	private class RemoveASINButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			
+			// if an ASIN is selected, and author is selected
+			if (!ASINsList.isSelectionEmpty() && !authorNameList.isSelectionEmpty()) {
+				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
+				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				int selectedASINIndex = ASINsList.getSelectedIndex();
+				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
+				String ASIN = ASINListModel.getElementAt(selectedASINIndex).toString();
+				ArrayList<String> asins = authorToASINMap.get(authorName); // get authors ASIN list
+				
+				asins.remove(ASIN); // remove ASIN from list
+				authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
+				ASINListModel.removeElementAt(selectedASINIndex);
+			}
 		}
 	} //END ASINs 
 	
