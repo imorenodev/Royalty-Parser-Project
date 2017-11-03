@@ -13,6 +13,7 @@ import java.util.Map;
 public class UserGUI extends JFrame {
 	private final JFileChooser fileChooser = new JFileChooser();
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
+	private ArrayList<Author> authorsList = new ArrayList<>();
 	private JButton browseButton, 
 				addReportButton, 
 				removeReportButton, 
@@ -44,11 +45,14 @@ public class UserGUI extends JFrame {
 	/**
 	 * Constructor for UserGUI
 	 */
-	public UserGUI() {
+	public UserGUI(ArrayList<Author> presavedAuthorsList) {
 		//Create the window.
 		JFrame frame = new JFrame("Royalty Parser");
 		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// load pre-saved authors
+		authorsList = presavedAuthorsList;
 
 		buildReportsPanel();
 		buildAuthorProfilesPanel();
@@ -202,6 +206,18 @@ public class UserGUI extends JFrame {
 		northPanel.add(addAuthorButton);
 
 		authorNameList = new JList<String>(new DefaultListModel<String>());
+		DefaultListModel authorNameListModel = (DefaultListModel)authorNameList.getModel();
+
+		// populate authorList with presaved author names
+		String authorName = "";
+		ArrayList<String> authorsASINs = new ArrayList<>();
+		for (Author a : authorsList) {
+			authorName = a.getName();
+			authorsASINs = (ArrayList)a.getASINList();
+			authorNameListModel.addElement(a.getName());
+			authorToASINMap.put(authorName, authorsASINs);
+		}
+
 		authorNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
 		authorNameList.setVisibleRowCount(5);
