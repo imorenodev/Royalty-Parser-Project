@@ -159,8 +159,10 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
-			reportListModel.removeElementAt(reportList.getSelectedIndex());
-			JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
+			if (!reportListModel.isEmpty()) {
+				reportListModel.removeElementAt(reportList.getSelectedIndex());
+				JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
+			}
 		}
 	} // END REPORT PANEL
 	
