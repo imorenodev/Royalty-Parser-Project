@@ -69,16 +69,16 @@ public class ReportGenerator {
 		headerRow.add("Title");
 		headerRow.add("Author");
 		headerRow.add("ASIN"); 
-		headerRow.add("MarketPlace");
+		headerRow.add("Marketplace");
 		headerRow.add("Units Sold");
 		headerRow.add("Units Refunded"); 
 		headerRow.add("Net Units Sold");
 		headerRow.add("Royalty Type");
 		headerRow.add("Transaction Type");
 		headerRow.add("Currency");
-		headerRow.add("Avg. List Price Without Tax");
-		headerRow.add("Avg. Offer Price Without Tax");
-		headerRow.add("Avg. File Size");
+		headerRow.add("Avg. List Price without tax");
+		headerRow.add("Avg. Offer Price without tax");
+		headerRow.add("Avg. File Size (MB)");
 		headerRow.add("Avg. Delivery Cost");
 		headerRow.add("Royalty");
 		

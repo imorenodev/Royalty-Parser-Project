@@ -70,7 +70,7 @@ public class RetailerRawData {
 	
 		// remove empty lines
 		for (int i = 0; i < 3; i++) {
-				bookList.remove(bookList.size() - 1);
+				//bookList.remove(bookList.size() - 1);
 		}
 	}
 }
