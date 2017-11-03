@@ -4,11 +4,7 @@ public class RoyaltyParserClient {
 
     public static void main(String[] args) {
     		String[] authors = new String[] {"Brittany", "Claire", "Jeanne", "Katrina", "Nicole", "Rebecca"};
-    		/**
-        List<String> asins = new ArrayList<>();
-		asins.add("B00R6VNRMO");
-		asins.add("B00X09L2OG");
-		*/
+  
 		List<Book> amazonRawData = RetailerRawData.getData("KDPRoyalties.xlsx");
 		
     		for (String author : authors) {

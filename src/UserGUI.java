@@ -38,6 +38,7 @@ public class UserGUI extends JFrame {
 	private JScrollPane reportListScrollPane,
 			authorNameListScrollPane,
 			ASINsListScrollPane;
+	private JTextArea logTextBox;
 
 	/**
 	 * Constructor for UserGUI
@@ -89,7 +90,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(addReportButton);
 
 		reportList = new JList<String>(new DefaultListModel<String>());
-		reportList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		reportList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		reportList.addListSelectionListener(new ReportListSelectionListener());
 		reportList.setVisibleRowCount(5);
 		reportListScrollPane = new JScrollPane(reportList);
@@ -108,7 +109,7 @@ public class UserGUI extends JFrame {
 	private class ReportListSelectionListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
-			JOptionPane.showMessageDialog(null,e.getFirstIndex());
+			//logTextBox.append("Selected Report: " + e.getFirstIndex() + "\n");
 		}
 	}
 	
@@ -124,7 +125,7 @@ public class UserGUI extends JFrame {
 					//Handle opening file.
 					findReportField.setText(file.getPath());
 				} else {
-					JOptionPane.showMessageDialog(null, "Open command cancelled by user.\n");
+					logTextBox.append("Open command cancelled by user.\n");
 				}
 	 
 			//Handle save button action.
@@ -133,9 +134,9 @@ public class UserGUI extends JFrame {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					//handle saving the file.
-					JOptionPane.showMessageDialog(null, "Saving: " + file.getName() + ".\n");
+					logTextBox.append("Saving: " + file.getName() + ".\n");
 				} else {
-					JOptionPane.showMessageDialog(null, "Save command cancelled by user.\n");
+					logTextBox.append("Save command cancelled by user.\n");
 				}
 			}
 		}
@@ -151,26 +152,29 @@ public class UserGUI extends JFrame {
 				// if report is not already present, add its path string to reportList
 				if (!reportListModel.contains(reportPath)) {
 					reportListModel.addElement(reportPath);
+					logTextBox.append("Added Report: " + reportPath + "\n");
 				} else {
-					JOptionPane.showMessageDialog(null, "ERROR Report Already Added");
+					logTextBox.append("ERROR Report Already Added\n");
 				}
 				findReportField.setText(""); // clear the findReportField text box
 			}
-			JOptionPane.showMessageDialog(null, "Add Report Button Pressed");
 		}
 	}
 
 	private class RemoveReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			String reportPath = "";
 			if (!reportList.isSelectionEmpty()) {
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+				int selectedReportIndex = reportList.getSelectedIndex();
 				if (!reportListModel.isEmpty()) {
-					reportListModel.removeElementAt(reportList.getSelectedIndex());
-					JOptionPane.showMessageDialog(null, "Remove Report Button Pressed");
+					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
+					reportListModel.removeElementAt(selectedReportIndex);
+					logTextBox.append("Removed Report" + reportPath + "\n");
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "No Reports Selected");
+				logTextBox.append("No Report Selected");
 			}
 		}
 	} // END REPORT PANEL
@@ -197,7 +201,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(addAuthorButton);
 
 		authorNameList = new JList<String>(new DefaultListModel<String>());
-		authorNameList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		authorNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
 		authorNameList.setVisibleRowCount(5);
 		authorNameListScrollPane = new JScrollPane(authorNameList);
@@ -244,11 +248,11 @@ public class UserGUI extends JFrame {
 					authorListModel.addElement(authorName);
 					authorToASINMap.put(authorName, new ArrayList<String>());
 				} else {
-					JOptionPane.showMessageDialog(null, "ERROR Author Name Already Added");
+					logTextBox.append("ERROR Author Name Already Added");
 				}
 				enterAuthorNameField.setText(""); // clear the enterAuthorNameField text box
 			}
-			JOptionPane.showMessageDialog(null,  "Add Author Button Pressed");
+			logTextBox.append("Added Author: " + authorName + "\n");
 		}
 	}
 
@@ -265,12 +269,12 @@ public class UserGUI extends JFrame {
 					authorToASINMap.remove(authorName);
 					// remove author name from authorNameList
 					authorListModel.removeElementAt(selectedAuthorIndex);
-					JOptionPane.showMessageDialog(null, "Remove Author Button Pressed");
+					logTextBox.append("Removed Author: " + authorName + "\n");
 				} else {
-					JOptionPane.showMessageDialog(null, "No Author Selected");
+					logTextBox.append("No Author Selected");
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "No Author Selected");
+				logTextBox.append("No Author Selected");
 			}
 		}
 	} // END AUTHOR PROFILES
@@ -297,7 +301,7 @@ public class UserGUI extends JFrame {
 		northPanel.add(addASINButton);
 
 		ASINsList = new JList<String>(new DefaultListModel<String>());
-		ASINsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		ASINsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ASINsList.addListSelectionListener(new ASINsListSelectionListener());
 		ASINsList.setVisibleRowCount(5);
 		ASINsListScrollPane = new JScrollPane(ASINsList);
@@ -332,19 +336,19 @@ public class UserGUI extends JFrame {
 				
 				if (asins != null && ASIN != null && !ASIN.equals("")) {
 					if (!asins.contains(ASIN)) {
-						JOptionPane.showMessageDialog(null, "Entered second if");
 						asins.add(ASIN);
 						authorToASINMap.put(authorName, asins);
 						ASINListModel.addElement(ASIN);
+						logTextBox.append("Added ASIN: " + ASIN + "\n");
 					} else {
-						JOptionPane.showMessageDialog(null, "ERROR ASIN Already Present");
+						logTextBox.append("ERROR ASIN Already Present");
 					}
 					enterASINField.setText("");
 				} else {
-					JOptionPane.showMessageDialog(null,  "Please Enter an ASIN");
+					logTextBox.append("Please Enter an ASIN");
 				}
 			} else {
-				JOptionPane.showMessageDialog(null,  "Please Select an Author");
+				logTextBox.append("Please Select an Author");
 			}
 		}
 	}
@@ -366,6 +370,7 @@ public class UserGUI extends JFrame {
 				asins.remove(ASIN); // remove ASIN from list
 				authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
 				ASINListModel.removeElementAt(selectedASINIndex);
+				logTextBox.append("Removed ASIN: " + ASIN + "\n");
 			}
 		}
 	} //END ASINs 
@@ -382,7 +387,7 @@ public class UserGUI extends JFrame {
 		buttonsContainer.setBackground(Color.LIGHT_GRAY);
 		JPanel logContainer = new JPanel(new FlowLayout());
 		logContainer.setBackground(Color.LIGHT_GRAY);
-		JTextArea logTextBox = new JTextArea(5, 60);
+		logTextBox = new JTextArea(5, 60);
 		logContainer.add(logTextBox);
 
 		createButton = new JButton("Create Reports");
@@ -408,32 +413,4 @@ public class UserGUI extends JFrame {
 			// handle browse button click event
 		}
 	} //END ASINs 
-/**	
- 
-	public void actionPerformed(ActionEvent e) {
- 
-		//Handle open button action.
-		if (e.getSource() == openButton) {
-			int returnVal = fileChooser.showOpenDialog(UserGUI.this);
- 
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				//Handle opening file.
-			} else {
-				JOptionPane.showMessageDialog(this, "Open command cancelled by user." + newline);
-			}
- 
-		//Handle save button action.
-		} else if (e.getSource() == saveButton) {
-			int returnVal = fileChooser.showSaveDialog(UserGUI.this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				//handle saving the file.
-				JOptionPane.showMessageDialog(this, "Saving: " + file.getName() + "." + newline);
-			} else {
-				JOptionPane.showMessageDialog(this, "Save command cancelled by user." + newline);
-			}
-		}
-	}
-*/ 
 }
