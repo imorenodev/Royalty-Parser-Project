@@ -21,6 +21,7 @@ public class UserGUI extends JFrame {
 	private JButton browseButton, 
 			addReportButton, 
 			removeReportButton, 
+			removeAllReportsButton,
 			saveCurrencyConversionButton,
 			clearCurrencyConversionButton,
 			addAuthorButton, 
@@ -121,7 +122,10 @@ public class UserGUI extends JFrame {
 
 		removeReportButton = new JButton("Remove Report");
 		removeReportButton.addActionListener(new RemoveReportButtonListener());
+		removeAllReportsButton = new JButton("Remove All Reports");
+		removeAllReportsButton.addActionListener(new RemoveAllReportsButtonListener());
 		eastPanel.add(removeReportButton);
+		eastPanel.add(removeAllReportsButton);
 		
 		reportsPanel.add(northPanel, BorderLayout.NORTH);
 		reportsPanel.add(centerPanel, BorderLayout.CENTER);
@@ -174,6 +178,21 @@ public class UserGUI extends JFrame {
 		}
 	}
 
+	private class RemoveAllReportsButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+
+			if (!reportListModel.isEmpty()) {
+				reportListModel.removeAllElements();
+				reportFiles.clear();
+				logTextBox.append("Removed All Reports\n");
+			} else {
+				logTextBox.append("Report List Empty\n");
+			}
+		}
+	}
+
 	private class RemoveReportButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
@@ -183,6 +202,7 @@ public class UserGUI extends JFrame {
 				int selectedReportIndex = reportList.getSelectedIndex();
 				if (!reportListModel.isEmpty()) {
 					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
+					reportFiles.remove(reportListModel.getElementAt(selectedReportIndex));
 					reportListModel.removeElementAt(selectedReportIndex);
 					logTextBox.append("Removed Report: " + reportPath + "\n");
 				}
