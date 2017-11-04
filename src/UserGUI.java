@@ -183,6 +183,8 @@ public class UserGUI extends JFrame {
 					// add the report file to the reportFiles set
 					reportFiles.add(fileChooser.getSelectedFile());
 					addReportButton.setEnabled(false);
+					createButton.setEnabled(true);
+
 					logTextBox.append("Added Report: " + reportPath + "\n");
 				} else {
 					logTextBox.append("ERROR Report Already Added\n");
@@ -202,6 +204,7 @@ public class UserGUI extends JFrame {
 				reportListModel.removeAllElements();
 				reportFiles.clear();
 				removeAllReportsButton.setEnabled(false);
+				createButton.setEnabled(false);
 				logTextBox.append("Removed All Reports\n");
 			} else {
 				logTextBox.append("Report List Empty\n");
@@ -225,6 +228,7 @@ public class UserGUI extends JFrame {
 					if (reportListModel.isEmpty()) {
 						removeReportButton.setEnabled(false);
 						removeAllReportsButton.setEnabled(false);
+						createButton.setEnabled(false);
 					}
 
 					logTextBox.append("Removed Report: " + reportPath + "\n");
@@ -481,6 +485,7 @@ public class UserGUI extends JFrame {
 							// add each ASIN to the authorListModel
 							ASINsListModel.addElement(aName);
 						}
+						removeAllASINsButton.setEnabled(true);
 					}
 				}
 			} else {
@@ -556,8 +561,12 @@ public class UserGUI extends JFrame {
 
 		enterASINLabel = new JLabel("Enter New ASIN");
 		enterASINField = new JTextField(40);
+		addASINPanelButtonListener(enterASINField);
+
 		addASINButton = new JButton("Add ASIN");
 		addASINButton.addActionListener(new AddASINButtonListener());
+		addASINButton.setEnabled(false);
+
 		northPanel.add(enterASINLabel);
 		northPanel.add(enterASINField);
 		northPanel.add(addASINButton);
@@ -572,8 +581,11 @@ public class UserGUI extends JFrame {
 
 		removeASINButton = new JButton("Remove ASIN");
 		removeASINButton.addActionListener(new RemoveASINButtonListener());
+		removeASINButton.setEnabled(false);
 		removeAllASINsButton = new JButton("Remove All ASINs");
 		removeAllASINsButton.addActionListener(new RemoveAllASINsButtonListener());
+		removeAllASINsButton.setEnabled(false);
+
 		eastPanel.add(removeASINButton);
 		eastPanel.add(removeAllASINsButton);
 		
@@ -581,11 +593,33 @@ public class UserGUI extends JFrame {
 		ASINsPanel.add(centerPanel, BorderLayout.CENTER);
 		ASINsPanel.add(eastPanel, BorderLayout.EAST);
 	}
+
+	private void addASINPanelButtonListener(JTextField field) {
+		field.getDocument().addDocumentListener(new DocumentListener() {
+			  public void changedUpdate(DocumentEvent e) {
+					enableASINPanelButtons();
+				  }
+				  public void removeUpdate(DocumentEvent e) {
+					  // do nothing
+				  }
+				  public void insertUpdate(DocumentEvent e) {
+					enableASINPanelButtons();
+				  }
+
+				  public void enableASINPanelButtons() {
+					  //removeASINButton.setEnabled(true);
+					  //removeAllASINsButton.setEnabled(true);
+					  addASINButton.setEnabled(true);
+				  }
+			});
+	}
 	
 	private class ASINsListSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
+			removeASINButton.setEnabled(true);
+			removeAllASINsButton.setEnabled(true);
 		}
 	}
 	
@@ -617,6 +651,7 @@ public class UserGUI extends JFrame {
 			} else {
 				logTextBox.append("Please Select an Author\n");
 			}
+			addASINButton.setEnabled(false);
 		}
 	}
 
@@ -638,6 +673,8 @@ public class UserGUI extends JFrame {
 				//authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
 				ASINListModel.clear();
 				logTextBox.append("Removed all ASINs from Author: " + authorName + "\n");
+				removeAllASINsButton.setEnabled(false);
+				removeASINButton.setEnabled(false);
 			}
 		}
 	}
@@ -661,6 +698,11 @@ public class UserGUI extends JFrame {
 				//authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
 				ASINListModel.removeElementAt(selectedASINIndex);
 				logTextBox.append("Removed ASIN: " + ASIN + "\n");
+				removeASINButton.setEnabled(false);
+				
+				if (ASINListModel.isEmpty()) {
+					removeAllASINsButton.setEnabled(false);
+				}
 			}
 		}
 	} //END ASINs 
@@ -683,6 +725,7 @@ public class UserGUI extends JFrame {
 
 		createButton = new JButton("Create Reports");
 		createButton.addActionListener(new CreateButtonListener());
+		createButton.setEnabled(false);
 		buttonsContainer.add(createButton);
 
 		cancelButton = new JButton("Cancel");
