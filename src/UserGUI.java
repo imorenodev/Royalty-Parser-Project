@@ -9,12 +9,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 public class UserGUI extends JFrame {
 	private final JFileChooser fileChooser = new JFileChooser();
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	private ArrayList<Author> authorsList = new ArrayList<>();
+	private Map<String, JTextField> currencyTextFields = new HashMap<String, JTextField>();
 	private HashSet<File> reportFiles = new HashSet<>(); // use HashSet to maintain list of unique files
 	private JButton browseButton, 
 			addReportButton, 
@@ -193,15 +195,7 @@ public class UserGUI extends JFrame {
 
 	private void buildCurrencyPanel() {
 		// initialize conversionMap with default values
-		CurrencyConverter.conversionMap.put("USD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("CAD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("GBP", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("EUR", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("BRL", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("INR", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("JPY", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("AUD", Double.valueOf(1.0));
-		CurrencyConverter.conversionMap.put("MXN", Double.valueOf(1.0));
+		CurrencyConverter.resetConversionMap();
 
 		currencyPanel = new JPanel();
 		currencyPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -219,13 +213,22 @@ public class UserGUI extends JFrame {
 		JPYLabel = new JLabel("Japanese Yen (JPY)");
 		AUDLabel = new JLabel("Australian Dollar (AUD)");
 		CADField = new JTextField(3);
+		currencyTextFields.put("CAD", CADField);
 		GBPField = new JTextField(3);
+		currencyTextFields.put("GBP", GBPField);
 		BRLField = new JTextField(3);
+		currencyTextFields.put("BRL", BRLField);
 		INRField = new JTextField(3);
+		currencyTextFields.put("INR", INRField);
 		MXNField = new JTextField(3);
+		currencyTextFields.put("MXN", MXNField);
 		EURField = new JTextField(3);
+		currencyTextFields.put("EUR", EURField);
 		JPYField = new JTextField(3);
+		currencyTextFields.put("JPY", JPYField);
 		AUDField = new JTextField(3);
+		currencyTextFields.put("AUD", AUDField);
+
 		saveCurrencyConversionButton = new JButton("Save Conversions");
 		saveCurrencyConversionButton.addActionListener(new SaveCurrencyConversionButtonListener());
 		clearCurrencyConversionButton = new JButton("Clear All");
@@ -271,12 +274,36 @@ public class UserGUI extends JFrame {
 	private class ClearCurrencyConversionButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			CurrencyConverter.resetConversionMap();
+			JTextField field = new JTextField();
+			
+			Iterator<JTextField> currencyFieldsIterator = currencyTextFields.values().iterator();
+			while (currencyFieldsIterator.hasNext()) {
+				field = currencyFieldsIterator.next();
+				field.setText("");
+			}
 		}
 	} 
 
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			String currencyType = "";
+			Double conversionFactor = 0.0;
+			Iterator currencyFieldsIterator = currencyTextFields.entrySet().iterator();
+			JTextField currencyField = new JTextField();
+			
+			while (currencyFieldsIterator.hasNext()) {
+				Map.Entry fieldEntry = (Map.Entry)currencyFieldsIterator.next();
+				currencyField = (JTextField)fieldEntry.getValue();
+
+				if (currencyField != null && !currencyField.getText().equals("")) {
+					currencyType = fieldEntry.getKey().toString();
+					conversionFactor = Double.valueOf(currencyField.getText());
+					CurrencyConverter.conversionMap.put(currencyType, conversionFactor);
+					logTextBox.append("Added Currency Type: " + currencyType + ": Conversion Factor: " + conversionFactor + "\n");
+				}
+			}
 		}
 	} // END CURRENCY PANEL
 
