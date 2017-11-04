@@ -28,6 +28,7 @@ public class UserGUI extends JFrame {
 			removeAuthorButton, 
 			addASINButton, 
 			removeASINButton,
+			removeAllASINsButton,
 			createButton,
 			cancelButton;
 	private JPanel reportsPanel,
@@ -133,6 +134,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class ReportListSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
 			//logTextBox.append("Selected Report: " + e.getFirstIndex() + "\n");
@@ -140,6 +142,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class BrowseButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			//Handle open button action.
@@ -158,6 +161,7 @@ public class UserGUI extends JFrame {
 	}
 
 	private class AddReportButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			String reportPath = findReportField.getText();
@@ -179,6 +183,7 @@ public class UserGUI extends JFrame {
 	}
 
 	private class RemoveAllReportsButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
@@ -194,6 +199,7 @@ public class UserGUI extends JFrame {
 	}
 
 	private class RemoveReportButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			String reportPath = "";
@@ -292,6 +298,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class ClearCurrencyConversionButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			CurrencyConverter.resetConversionMap();
@@ -306,6 +313,7 @@ public class UserGUI extends JFrame {
 	} 
 
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			String currencyType = "";
@@ -378,6 +386,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
@@ -406,6 +415,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class AddAuthorButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			String authorName = enterAuthorNameField.getText();
@@ -428,6 +438,7 @@ public class UserGUI extends JFrame {
 	}
 
 	private class RemoveAuthorButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			if (!authorNameList.isSelectionEmpty()) {
@@ -484,7 +495,10 @@ public class UserGUI extends JFrame {
 
 		removeASINButton = new JButton("Remove ASIN");
 		removeASINButton.addActionListener(new RemoveASINButtonListener());
+		removeAllASINsButton = new JButton("Remove All ASINs");
+		removeAllASINsButton.addActionListener(new RemoveAllASINsButtonListener());
 		eastPanel.add(removeASINButton);
+		eastPanel.add(removeAllASINsButton);
 		
 		ASINsPanel.add(northPanel, BorderLayout.NORTH);
 		ASINsPanel.add(centerPanel, BorderLayout.CENTER);
@@ -492,12 +506,14 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class ASINsListSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// handle list selection event
 		}
 	}
 	
 	private class AddASINButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			if (!authorNameList.isSelectionEmpty()) {
@@ -527,7 +543,30 @@ public class UserGUI extends JFrame {
 		}
 	}
 
+	private class RemoveAllASINsButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// handle browse button click event
+			
+			// if an author is selected
+			if (!authorNameList.isSelectionEmpty()) {
+				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
+				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				int selectedASINIndex = ASINsList.getSelectedIndex();
+				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
+				ArrayList<String> asins = authorToASINMap.get(authorName); // get authors ASIN list
+				
+				asins.clear(); // remove all ASINs from list
+				//authorToASINMap.put(authorName, asins); // add updated list back to authorToASINMap
+				ASINListModel.clear();
+				logTextBox.append("Removed all ASINs from Author: " + authorName + "\n");
+			}
+		}
+	}
+
 	private class RemoveASINButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			
@@ -578,6 +617,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	private class CreateButtonListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			if (!authorToASINMap.isEmpty() && !reportFiles.isEmpty()) {
