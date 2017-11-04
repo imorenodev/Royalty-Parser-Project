@@ -399,8 +399,12 @@ public class UserGUI extends JFrame {
 
 		enterAuthorNameLabel = new JLabel("Enter New Author");
 		enterAuthorNameField = new JTextField(40);
+		addAuthorPanelButtonListener(enterAuthorNameField);
+
 		addAuthorButton = new JButton("Add Author");
 		addAuthorButton.addActionListener(new AddAuthorButtonListener());
+		addAuthorButton.setEnabled(false);
+
 		northPanel.add(enterAuthorNameLabel);
 		northPanel.add(enterAuthorNameField);
 		northPanel.add(addAuthorButton);
@@ -427,6 +431,8 @@ public class UserGUI extends JFrame {
 
 		removeAuthorButton = new JButton("Remove Author");
 		removeAuthorButton.addActionListener(new RemoveAuthorButtonListener());
+		removeAuthorButton.setEnabled(false);
+
 		eastPanel.add(removeAuthorButton);
 		
 		authorsPanel.add(northPanel, BorderLayout.NORTH);
@@ -434,6 +440,25 @@ public class UserGUI extends JFrame {
 		authorsPanel.add(eastPanel, BorderLayout.EAST);
 	}
 	
+	private void addAuthorPanelButtonListener(JTextField field) {
+		field.getDocument().addDocumentListener(new DocumentListener() {
+			  public void changedUpdate(DocumentEvent e) {
+					enableAuthorPanelButtons();
+				  }
+				  public void removeUpdate(DocumentEvent e) {
+					  // do nothing
+				  }
+				  public void insertUpdate(DocumentEvent e) {
+					enableAuthorPanelButtons();
+				  }
+
+				  public void enableAuthorPanelButtons() {
+					  addAuthorButton.setEnabled(true);
+					  removeAuthorButton.setEnabled(true);
+				  }
+			});
+	}
+
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
@@ -446,6 +471,7 @@ public class UserGUI extends JFrame {
 				String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
 				// check to see if author has any saved ASINs
 				ASINsListModel.clear();
+				removeAuthorButton.setEnabled(true);
 
 				if (authorName != null) { // check to make sure author isn't already previously deleted
 					if (authorToASINMap.containsKey(authorName)) {
@@ -483,6 +509,7 @@ public class UserGUI extends JFrame {
 			} else {
 				logTextBox.append("Enter an Author Name\n");
 			}
+			addAuthorButton.setEnabled(false);
 		}
 	}
 
@@ -504,6 +531,7 @@ public class UserGUI extends JFrame {
 					// clear ASINs from the ASINsList
 					ASINsListModel.clear(); 
 					logTextBox.append("Removed Author: " + authorName + "\n");
+					removeAuthorButton.setEnabled(false);
 				} else {
 					logTextBox.append("No Author Selected\n");
 				}
