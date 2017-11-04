@@ -107,6 +107,7 @@ public class UserGUI extends JFrame {
 		browseButton.addActionListener(new BrowseButtonListener());
 		addReportButton = new JButton("Add Report");
 		addReportButton.addActionListener(new AddReportButtonListener());
+		addReportButton.setEnabled(false);
 
 		northPanel.add(findReportLabel);
 		northPanel.add(findReportField);
@@ -123,8 +124,10 @@ public class UserGUI extends JFrame {
 
 		removeReportButton = new JButton("Remove Report");
 		removeReportButton.addActionListener(new RemoveReportButtonListener());
+		removeReportButton.setEnabled(false);
 		removeAllReportsButton = new JButton("Remove All Reports");
 		removeAllReportsButton.addActionListener(new RemoveAllReportsButtonListener());
+		removeAllReportsButton.setEnabled(false);
 		eastPanel.add(removeReportButton);
 		eastPanel.add(removeAllReportsButton);
 		
@@ -153,6 +156,10 @@ public class UserGUI extends JFrame {
 					File file = fileChooser.getSelectedFile();
 					//Handle opening file.
 					findReportField.setText(file.getPath());
+
+					addReportButton.setEnabled(true);
+					removeReportButton.setEnabled(true);
+					removeAllReportsButton.setEnabled(true);
 				} else {
 					logTextBox.append("Open command cancelled by user.\n");
 				}
@@ -173,6 +180,7 @@ public class UserGUI extends JFrame {
 					reportListModel.addElement(reportPath);
 					// add the report file to the reportFiles set
 					reportFiles.add(fileChooser.getSelectedFile());
+					addReportButton.setEnabled(false);
 					logTextBox.append("Added Report: " + reportPath + "\n");
 				} else {
 					logTextBox.append("ERROR Report Already Added\n");
@@ -191,6 +199,7 @@ public class UserGUI extends JFrame {
 			if (!reportListModel.isEmpty()) {
 				reportListModel.removeAllElements();
 				reportFiles.clear();
+				removeAllReportsButton.setEnabled(false);
 				logTextBox.append("Removed All Reports\n");
 			} else {
 				logTextBox.append("Report List Empty\n");
@@ -210,6 +219,12 @@ public class UserGUI extends JFrame {
 					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
 					reportFiles.remove(reportListModel.getElementAt(selectedReportIndex));
 					reportListModel.removeElementAt(selectedReportIndex);
+
+					if (reportListModel.isEmpty()) {
+						removeReportButton.setEnabled(false);
+						removeAllReportsButton.setEnabled(false);
+					}
+
 					logTextBox.append("Removed Report: " + reportPath + "\n");
 				}
 			} else {
