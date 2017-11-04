@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -254,26 +256,36 @@ public class UserGUI extends JFrame {
 		JPYLabel = new JLabel("Japanese Yen (JPY)");
 		AUDLabel = new JLabel("Australian Dollar (AUD)");
 		CADField = new JTextField(3);
+		addCurrencyButtonListeners(CADField);
 		currencyTextFields.put("CAD", CADField);
 		GBPField = new JTextField(3);
+		addCurrencyButtonListeners(GBPField);
 		currencyTextFields.put("GBP", GBPField);
 		BRLField = new JTextField(3);
+		addCurrencyButtonListeners(BRLField);
 		currencyTextFields.put("BRL", BRLField);
 		INRField = new JTextField(3);
+		addCurrencyButtonListeners(INRField);
 		currencyTextFields.put("INR", INRField);
 		MXNField = new JTextField(3);
+		addCurrencyButtonListeners(MXNField);
 		currencyTextFields.put("MXN", MXNField);
 		EURField = new JTextField(3);
+		addCurrencyButtonListeners(EURField);
 		currencyTextFields.put("EUR", EURField);
 		JPYField = new JTextField(3);
+		addCurrencyButtonListeners(JPYField);
 		currencyTextFields.put("JPY", JPYField);
 		AUDField = new JTextField(3);
+		addCurrencyButtonListeners(AUDField);
 		currencyTextFields.put("AUD", AUDField);
 
 		saveCurrencyConversionButton = new JButton("Save Conversions");
 		saveCurrencyConversionButton.addActionListener(new SaveCurrencyConversionButtonListener());
+		saveCurrencyConversionButton.setEnabled(false);
 		clearCurrencyConversionButton = new JButton("Clear All");
 		clearCurrencyConversionButton.addActionListener(new ClearCurrencyConversionButtonListener());
+		clearCurrencyConversionButton.setEnabled(false);
 		
 		JPanel cadPanel = buildCurrencyPanel(CADLabel, CADField);
 		JPanel gbpPanel = buildCurrencyPanel(GBPLabel, GBPField);
@@ -303,7 +315,26 @@ public class UserGUI extends JFrame {
 		currencyPanel.add(new JPanel()); // empty cell
 		currencyPanel.add(saveCurrencyButtonPanel);
 	}
-	
+
+	private void addCurrencyButtonListeners(JTextField field) {
+		field.getDocument().addDocumentListener(new DocumentListener() {
+			  public void changedUpdate(DocumentEvent e) {
+					enableCurrencyPanelButtons();
+				  }
+				  public void removeUpdate(DocumentEvent e) {
+					  // do nothing
+				  }
+				  public void insertUpdate(DocumentEvent e) {
+					enableCurrencyPanelButtons();
+				  }
+
+				  public void enableCurrencyPanelButtons() {
+					  saveCurrencyConversionButton.setEnabled(true);
+					  clearCurrencyConversionButton.setEnabled(true);
+				  }
+			});
+	}
+
 	private JPanel buildCurrencyPanel(JLabel label, JTextField field) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
@@ -324,6 +355,8 @@ public class UserGUI extends JFrame {
 				field = currencyFieldsIterator.next();
 				field.setText("");
 			}
+			saveCurrencyConversionButton.setEnabled(false);
+			clearCurrencyConversionButton.setEnabled(false);
 		}
 	} 
 
@@ -331,6 +364,7 @@ public class UserGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			CurrencyConverter.resetConversionMap(); // clear conversionMap
 			String currencyType = "";
 			Double conversionFactor = 0.0;
 			Iterator currencyFieldsIterator = currencyTextFields.entrySet().iterator();
