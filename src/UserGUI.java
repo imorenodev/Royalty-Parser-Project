@@ -668,6 +668,8 @@ public class UserGUI extends JFrame {
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
 
+				// first replace duplicate commas and leading spaces from enterASINField String
+				// the split the String wherever a comma or space occurs and place each entry into String[] ASINs
 				String[] ASINs = enterASINField.getText().replaceAll("^[,\\s]+", "").split("[,\\s]+");
 				JOptionPane.showMessageDialog(null, ASINs);
 				ArrayList<String> asins = authorToASINMap.get(authorName);
