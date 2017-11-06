@@ -107,7 +107,7 @@ public class UserGUI extends JFrame {
 				));
 		reportsPanel.setLayout(new BorderLayout());
 
-		findReportLabel = new JLabel("Find Report");
+		findReportLabel = new JLabel("Find Reports");
 		findReportField = new JTextField(40);
 		browseButton = new JButton("Browse");
 		browseButton.addActionListener(new BrowseButtonListener());
@@ -594,7 +594,7 @@ public class UserGUI extends JFrame {
 				));
 		ASINsPanel.setLayout(new BorderLayout());
 
-		enterASINLabel = new JLabel("Enter New ASIN");
+		enterASINLabel = new JLabel("Enter New ASINs");
 		enterASINField = new JTextField(40);
 		addASINPanelButtonListener(enterASINField);
 
@@ -667,21 +667,27 @@ public class UserGUI extends JFrame {
 				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
-				String ASIN = enterASINField.getText();
+
+				String[] ASINs = enterASINField.getText().replaceAll("^[,\\s]+", "").split("[,\\s]+");
+				JOptionPane.showMessageDialog(null, ASINs);
 				ArrayList<String> asins = authorToASINMap.get(authorName);
 				
-				if (asins != null && ASIN != null && !ASIN.equals("")) {
-					if (!asins.contains(ASIN)) {
-						asins.add(ASIN);
-						//authorToASINMap.put(authorName, asins);
-						ASINListModel.addElement(ASIN);
-						logTextBox.append("Added ASIN: " + ASIN + "\n");
-					} else {
-						logTextBox.append("ERROR ASIN Already Present\n");
+				if (asins != null && ASINs != null) {
+					for (int i = 0; i < ASINs.length; i++) {
+						if (ASINs[i] != null && !ASINs[i].isEmpty()) {
+							if (!asins.contains(ASINs[i])) {
+								asins.add(ASINs[i]);
+								ASINListModel.addElement(ASINs[i]);
+
+								logTextBox.append("Added ASIN: " + ASINs[i] + "\n");
+							} else {
+								logTextBox.append("ERROR ASIN Already Present\n");
+							}
+							enterASINField.setText("");
+						} else {
+							logTextBox.append("Please Enter an ASIN\n");
+						}
 					}
-					enterASINField.setText("");
-				} else {
-					logTextBox.append("Please Enter an ASIN\n");
 				}
 			} else {
 				logTextBox.append("Please Select an Author\n");
