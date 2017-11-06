@@ -19,7 +19,8 @@ public class UserGUI extends JFrame {
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	private ArrayList<Author> authorsList = new ArrayList<>();
 	private Map<String, JTextField> currencyTextFields = new HashMap<String, JTextField>();
-	private HashSet<File> reportFiles = new HashSet<>(); // use HashSet to maintain list of unique files
+	private HashSet<File> savedReportFiles = new HashSet<>(); // use HashSet to maintain list of unique files
+	private File[] inputReportFiles = new File[100]; // array of multiple selection input files
 	private JButton browseButton, 
 			addReportButton, 
 			removeReportButton, 
@@ -158,12 +159,14 @@ public class UserGUI extends JFrame {
 	 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					//Handle opening files.
-					File[] files = fileChooser.getSelectedFiles();
-					findReportField.setText(buildInputTextString(files));
+					
+					// save all selected input files in an array
+					inputReportFiles = fileChooser.getSelectedFiles();
+					// update the browse text field with selected file names
+					findReportField.setText(buildInputTextString(inputReportFiles));
 
 					addReportButton.setEnabled(true);
-					removeReportButton.setEnabled(true);
-					removeAllReportsButton.setEnabled(true);
+					
 				} else {
 					logTextBox.append("Open command cancelled by user.\n");
 				}
@@ -197,23 +200,28 @@ public class UserGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			String reportPath = findReportField.getText();
-			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+			for (File inputReportFile : inputReportFiles) {
+				String reportPath = inputReportFile.getPath();
+				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
-			if (reportPath != null && !reportPath.equals("")) {
-				// if report is not already present, add its path string to reportList
-				if (!reportListModel.contains(reportPath)) {
-					reportListModel.addElement(reportPath);
-					// add the report file to the reportFiles set
-					reportFiles.add(fileChooser.getSelectedFile());
-					addReportButton.setEnabled(false);
-					createButton.setEnabled(true);
+				if (reportPath != null && !reportPath.equals("")) {
+					// if report is not already present, add its path string to reportList
+					if (!reportListModel.contains(reportPath)) {
+						reportListModel.addElement(reportPath);
+						// add the report file to the savedReportFiles set
+						savedReportFiles.add(inputReportFile);
 
-					logTextBox.append("Added Report: " + reportPath + "\n");
-				} else {
-					logTextBox.append("ERROR Report Already Added\n");
+						addReportButton.setEnabled(false);
+						removeReportButton.setEnabled(true);
+						removeAllReportsButton.setEnabled(true);
+						createButton.setEnabled(true);
+
+						logTextBox.append("Added Report: " + reportPath + "\n");
+					} else {
+						logTextBox.append("ERROR Report Already Added\n");
+					}
+					findReportField.setText(""); // clear the findReportField text box
 				}
-				findReportField.setText(""); // clear the findReportField text box
 			}
 		}
 	}
@@ -226,9 +234,12 @@ public class UserGUI extends JFrame {
 
 			if (!reportListModel.isEmpty()) {
 				reportListModel.removeAllElements();
-				reportFiles.clear();
+				savedReportFiles.clear();
+
 				removeAllReportsButton.setEnabled(false);
+				removeReportButton.setEnabled(false);
 				createButton.setEnabled(false);
+
 				logTextBox.append("Removed All Reports\n");
 			} else {
 				logTextBox.append("Report List Empty\n");
@@ -246,7 +257,7 @@ public class UserGUI extends JFrame {
 				int selectedReportIndex = reportList.getSelectedIndex();
 				if (!reportListModel.isEmpty()) {
 					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
-					reportFiles.remove(reportListModel.getElementAt(selectedReportIndex));
+					savedReportFiles.remove(reportListModel.getElementAt(selectedReportIndex));
 					reportListModel.removeElementAt(selectedReportIndex);
 
 					if (reportListModel.isEmpty()) {
@@ -764,8 +775,8 @@ public class UserGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			if (!authorToASINMap.isEmpty() && !reportFiles.isEmpty()) {
-				ReportGenerator.createReport(authorToASINMap, reportFiles);
+			if (!authorToASINMap.isEmpty() && !savedReportFiles.isEmpty()) {
+				ReportGenerator.createReport(authorToASINMap, savedReportFiles);
 			} else {
 				logTextBox.append("ERROR CANNOT CREATE REPORTS\n");
 			}
