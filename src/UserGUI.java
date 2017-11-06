@@ -67,6 +67,9 @@ public class UserGUI extends JFrame {
 		JFrame frame = new JFrame("Royalty Parser");
 		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// allow user to select multiple files at once
+		fileChooser.setMultiSelectionEnabled(true);
 		
 		// load pre-saved authors
 		authorsList = presavedAuthorsList;
@@ -150,14 +153,13 @@ public class UserGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
-			//Handle open button action.
 			if (e.getSource() == browseButton) {
 				int returnVal = fileChooser.showOpenDialog(UserGUI.this);
 	 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-					//Handle opening file.
-					findReportField.setText(file.getPath());
+					//Handle opening files.
+					File[] files = fileChooser.getSelectedFiles();
+					findReportField.setText(buildInputTextString(files));
 
 					addReportButton.setEnabled(true);
 					removeReportButton.setEnabled(true);
@@ -166,6 +168,28 @@ public class UserGUI extends JFrame {
 					logTextBox.append("Open command cancelled by user.\n");
 				}
 			}
+		}
+		
+		private String buildInputTextString(File[] files) {
+			StringBuilder filesString = new StringBuilder();
+			String fileName = null;
+			String pathName = null;
+			int lastIndexOfSlash = 0;
+			
+			for (File file : files) {
+				pathName = file.getPath();
+				// if system is Windows check for index of last forward slash / in path
+				if (System.getProperty("os.name").startsWith("Windows")) {
+					lastIndexOfSlash = pathName.lastIndexOf('\\') + 1;
+				} else { // system is ios or linux
+					lastIndexOfSlash = pathName.lastIndexOf('/') + 1;
+				}
+
+				fileName = pathName.substring(lastIndexOfSlash, pathName.length());
+				filesString.append(fileName + " ");
+			}
+
+			return filesString.toString();
 		}
 	}
 
