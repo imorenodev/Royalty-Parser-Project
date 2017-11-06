@@ -18,10 +18,10 @@ public class RetailerRawData {
 	private static List<Book> bookList = new ArrayList<>();
 
 	public static List<Book> getData(String filePath) {
-		InputStream inp = null;
+		InputStream input = null;
 		try {
-			inp = new FileInputStream(filePath);
-			Workbook wb = WorkbookFactory.create(inp);
+			input = new FileInputStream(filePath);
+			Workbook wb = WorkbookFactory.create(input);
 
 			// if Amazon Royalty SpreadSheet then
 			getAmazonData(wb.getSheetAt(0));
@@ -34,7 +34,7 @@ public class RetailerRawData {
 			System.out.println("ERROR: " + e.getMessage());
 		} finally {
 			try {
-				inp.close();
+				input.close();
 			} catch (IOException e) {
 				System.out.println("ERROR: " + e.getMessage());
 			}
@@ -68,9 +68,9 @@ public class RetailerRawData {
 	         rowIterator.remove();
 	     }
 	
-		// remove empty lines
+		/** remove empty lines
 		for (int i = 0; i < 3; i++) {
 				//bookList.remove(bookList.size() - 1);
-		}
+		}*/
 	}
 }
