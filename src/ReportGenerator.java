@@ -143,7 +143,7 @@ public class ReportGenerator {
 		}
 
 		try {
-			fileOut = new FileOutputStream(reportFileName);
+			fileOut = new FileOutputStream(new File(reportFileName));
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: " + e.getMessage());
 		} catch (IOException e) {
