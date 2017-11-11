@@ -156,6 +156,7 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			if (e.getSource() == browseButton) {
+				// only allow KDP Excel reports to be selected by user
 				fileChooser.setFileFilter(new ExcelFileFilter());
 				int returnVal = fileChooser.showOpenDialog(UserGUI.this);
 	 
@@ -175,17 +176,22 @@ public class UserGUI extends JFrame {
 			}
 		}
 		
+		/**
+		 * @purpose Private inner class ExcelFileFilter extends FileFilter and allows
+		 * 			overloaded accept method to only allow user to select files ending in ".xlsx"
+		 * @author Ian Moreno 
+		 */
 		private class ExcelFileFilter extends FileFilter {
 			  public String getDescription() {
 				  return "Excel Documents (.xlsx)";
 			  }
 
-			  public boolean accept(File f) {
-				  if (f.isDirectory()) {
+			  public boolean accept(File file) {
+				  if (file.isDirectory()) {
 					  return true;
 				  } else {
-					  String filename = f.getName().toLowerCase();
-					  return filename.endsWith(".xlsx") ;
+					  String fileName = file.getName().toLowerCase();
+					  return fileName.endsWith(".xlsx");
 				  }
 			  }
 		}
@@ -219,16 +225,19 @@ public class UserGUI extends JFrame {
 			// handle browse button click event
 			for (File inputReportFile : inputReportFiles) {
 				String reportPath = inputReportFile.getPath();
+				String reportFileName = inputReportFile.getName();
+				String prefixKDP = "KDP Prior Month Royalties";
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
-				if (reportPath != null && !reportPath.equals("")) {
+				// ensure reportPath is not null or empty and ensure the fileName begins with "KDP Prior Month Royalties"
+				// to minimize importing of invalid spreadsheets
+				if (reportPath != null && !reportPath.equals("") && reportFileName.regionMatches(0, prefixKDP, 0, prefixKDP.length()-1)) {
 					// if report is not already present, add its path string to reportList
 					if (!reportListModel.contains(reportPath)) {
 						reportListModel.addElement(reportPath);
 						// add the report file to the savedReportFiles set
 						savedReportFiles.add(inputReportFile);
 
-						addReportButton.setEnabled(false);
 						removeReportButton.setEnabled(true);
 						removeAllReportsButton.setEnabled(true);
 						createButton.setEnabled(true);
@@ -237,8 +246,12 @@ public class UserGUI extends JFrame {
 					} else {
 						logTextBox.append("ERROR Report Already Added\n");
 					}
-					findReportField.setText(""); // clear the findReportField text box
+				} else {
+					logTextBox.append("ERROR Not a valid KDP Report\n");
 				}
+
+				addReportButton.setEnabled(false); // disable the add report button until a new file is selected
+				findReportField.setText(""); // clear the findReportField text box
 			}
 		}
 	}
