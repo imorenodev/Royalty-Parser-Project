@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.filechooser.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -155,6 +156,7 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
 			if (e.getSource() == browseButton) {
+				fileChooser.setFileFilter(new ExcelFileFilter());
 				int returnVal = fileChooser.showOpenDialog(UserGUI.this);
 	 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -171,6 +173,21 @@ public class UserGUI extends JFrame {
 					logTextBox.append("Open command cancelled by user.\n");
 				}
 			}
+		}
+		
+		private class ExcelFileFilter extends FileFilter {
+			  public String getDescription() {
+				  return "Excel Documents (.xlsx)";
+			  }
+
+			  public boolean accept(File f) {
+				  if (f.isDirectory()) {
+					  return true;
+				  } else {
+					  String filename = f.getName().toLowerCase();
+					  return filename.endsWith(".xlsx") ;
+				  }
+			  }
 		}
 		
 		private String buildInputTextString(File[] files) {
