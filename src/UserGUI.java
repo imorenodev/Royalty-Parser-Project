@@ -171,28 +171,39 @@ public class UserGUI extends JFrame {
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(reportListScrollPane, BorderLayout.CENTER);
 
+		// create buttons for eastPanel
 		removeReportButton = new JButton("Remove Report");
 		removeReportButton.addActionListener(new RemoveReportButtonListener());
 		removeReportButton.setEnabled(false);
 		removeAllReportsButton = new JButton("Remove All Reports");
 		removeAllReportsButton.addActionListener(new RemoveAllReportsButtonListener());
 		removeAllReportsButton.setEnabled(false);
+		
+		// add buttons to eastPanel
 		eastPanel.add(removeReportButton);
 		eastPanel.add(removeAllReportsButton);
 		
+		// add northPanel, centerPanel, and eastPanel to the reportsPanel
 		reportsPanel.add(northPanel, BorderLayout.NORTH);
 		reportsPanel.add(centerPanel, BorderLayout.CENTER);
 		reportsPanel.add(eastPanel, BorderLayout.EAST);
 	}
 	
+	/**
+	 * @purpose	Implement the ListSelectionListener for the ReportList
+	 * @author  	Ian Moreno
+	 */
 	private class ReportListSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			// handle list selection event
-			//logTextBox.append("Selected Report: " + e.getFirstIndex() + "\n");
+			// do nothing, method override required for event listener 
 		}
 	}
-	
+
+	/**
+	 * @purpose	Implement the ActionListener for the BrowsButtonListener 
+	 * @author  	Ian Moreno
+	 */
 	private class BrowseButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -210,9 +221,11 @@ public class UserGUI extends JFrame {
 					// update the browse text field with selected file names
 					findReportField.setText(buildInputTextString(inputReportFiles));
 
+					// enable to add report button
 					addReportButton.setEnabled(true);
 					
 				} else {
+					// output status message to user
 					logTextBox.append("Open command cancelled by user.\n");
 				}
 			}
@@ -225,35 +238,49 @@ public class UserGUI extends JFrame {
 		 */
 		private class ExcelFileFilter extends FileFilter {
 			  public String getDescription() {
+				  // Present description to user
 				  return "Excel Documents (.xlsx)";
 			  }
 
 			  public boolean accept(File file) {
+				  // allow user to select a directory
 				  if (file.isDirectory()) {
 					  return true;
 				  } else {
+					  // user's file can only be selected if it ends in .xlsx
 					  String fileName = file.getName().toLowerCase();
 					  return fileName.endsWith(".xlsx");
 				  }
 			  }
 		}
 		
+		/**
+		 * @purpose 	Private helper method buildInputTextString takes an array of files and 
+		 * 			returns a String to populate the input textBox for user to see 
+		 * @param 	files is a File[] containing all of the files selected by user
+		 * @return	String representing the text string of the chosen files and their paths
+		 */
 		private String buildInputTextString(File[] files) {
+			// use StringBuilder to allow for easier concatenation
 			StringBuilder filesString = new StringBuilder();
 			String fileName = null;
 			String pathName = null;
 			int lastIndexOfSlash = 0;
 			
+			// for each selected file
 			for (File file : files) {
+				// get the pathname
 				pathName = file.getPath();
-				// if system is Windows check for index of last forward slash / in path
+				// if system is Windows check for index of last occurrence of backslash \ in path
 				if (System.getProperty("os.name").startsWith("Windows")) {
 					lastIndexOfSlash = pathName.lastIndexOf('\\') + 1;
-				} else { // system is ios or linux
+				} else { // system is ios or linux check for last occurrence of /
 					lastIndexOfSlash = pathName.lastIndexOf('/') + 1;
 				}
 
+				// grab substring of file name
 				fileName = pathName.substring(lastIndexOfSlash, pathName.length());
+				// append fileName to the total fileString
 				filesString.append(fileName + " ");
 			}
 
