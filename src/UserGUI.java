@@ -491,8 +491,8 @@ public class UserGUI extends JFrame {
 			authorToASINMap.put(authorName, authorsASINs);
 		}
 
-		authorNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
+		authorNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		authorNameList.setVisibleRowCount(5);
 		authorNameListScrollPane = new JScrollPane(authorNameList);
 		centerPanel.setLayout(new BorderLayout());
@@ -701,7 +701,6 @@ public class UserGUI extends JFrame {
 				// first replace duplicate commas and leading spaces from enterASINField String
 				// the split the String wherever a comma or space occurs and place each entry into String[] ASINs
 				String[] ASINs = enterASINField.getText().replaceAll("^[,\\s]+", "").split("[,\\s]+");
-				JOptionPane.showMessageDialog(null, ASINs);
 				ArrayList<String> asins = authorToASINMap.get(authorName);
 				
 				if (asins != null && ASINs != null) {
@@ -721,10 +720,10 @@ public class UserGUI extends JFrame {
 						}
 					}
 				}
+				addASINButton.setEnabled(false);
 			} else {
 				logTextBox.append("Please Select an Author\n");
 			}
-			addASINButton.setEnabled(false);
 		}
 	}
 
@@ -828,4 +827,5 @@ public class UserGUI extends JFrame {
 			System.exit(0);
 		}
 	} //END ButtonsPanel
+	
 }
