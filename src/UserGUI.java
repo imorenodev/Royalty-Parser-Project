@@ -275,14 +275,14 @@ public class UserGUI extends JFrame {
 	}
 
 	/**
-	 * @purpose 	private class AddReportButtonlistener implements ActionListener 
+	 * @purpose 	private class AddReportButtonlistener implements ActionListener for 'Add Report' button
 	 * 			and handles actionPerformed events.
 	 * @author 	Ian Moreno
 	 */
 	private class AddReportButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// handle 'Add Report' button click event
 			
 			// for each inputReportFile
 			for (File inputReportFile : inputReportFiles) {
@@ -290,27 +290,34 @@ public class UserGUI extends JFrame {
 				String reportPath = inputReportFile.getPath();
 				// get report file name
 				String reportFileName = inputReportFile.getName();
+				// save the file name prefix that all valid KDP report file names should contain
 				String prefixKDP = "KDP Prior Month Royalties";
+				// grab an instance of the ListModel that maintains the current list of reports shown in reportList
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
 				// ensure reportPath is not null or empty and ensure the fileName begins with "KDP Prior Month Royalties"
-				// to minimize importing of invalid spreadsheets
+				// this is done in order to minimize importing of invalid spreadsheets
 				if (reportPath != null && !reportPath.equals("") && reportFileName.regionMatches(0, prefixKDP, 0, prefixKDP.length()-1)) {
 					// if report is not already present, add its path string to reportList
 					if (!reportListModel.contains(reportPath)) {
+						// ad the report file path String to the reportList and display to user
 						reportListModel.addElement(reportPath);
 						// add the report file to the savedReportFiles set
 						savedReportFiles.add(inputReportFile);
 
+						// enable 'Remove Report', 'Remove All Reports', and 'Create Reports' buttons
 						removeReportButton.setEnabled(true);
 						removeAllReportsButton.setEnabled(true);
 						createButton.setEnabled(true);
 
+						// report added successfully, output status message to user
 						logTextBox.append("Added Report: " + reportPath + "\n");
 					} else {
+						// report is already contained/present in the reportListModel, output status message to user
 						logTextBox.append("ERROR Report Already Added\n");
 					}
 				} else {
+					// there was an error when attempting to add report, output status message to user
 					logTextBox.append("ERROR Not a valid KDP Report\n");
 				}
 
@@ -320,49 +327,81 @@ public class UserGUI extends JFrame {
 		}
 	}
 
+	/**
+	 * @purpose 	private class RemoveAllReportsButtonListener implements ActionListener for 'Remove All Reports' button
+	 * 			and handles actionPerformed events.
+	 * @author 	Ian Moreno
+	 */
 	private class RemoveAllReportsButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// handle 'Remove All Reports' button click event
+
+			// grab an instance of the ListModel that maintains the current list of reports shown in reportList
 			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
+			// if the reportList contains reports
 			if (!reportListModel.isEmpty()) {
+				// remove all the reports from the report list
 				reportListModel.removeAllElements();
+				// remove all the reports from the savedReportFiles set
 				savedReportFiles.clear();
 
+				// disable the 'Remove All Reports', 'Remove Report', and 'Create Reports' buttons
 				removeAllReportsButton.setEnabled(false);
 				removeReportButton.setEnabled(false);
 				createButton.setEnabled(false);
 
+				// successfully removed all the reports, output status message to user
 				logTextBox.append("Removed All Reports\n");
 			} else {
+				// report list was empty, output status message to user
 				logTextBox.append("Report List Empty\n");
 			}
 		}
 	}
 
+	/**
+	 * @purpose 	private class RemoveReportButtonListener implements ActionListener for 'Remove Report' button
+	 * 			and handles actionPerformed events.
+	 * @author 	Ian Moreno
+	 */	
 	private class RemoveReportButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// handle 'Remove Report' button click event
+			
+			// initialize String variable to hold the report path
 			String reportPath = "";
+			// if a report is selected by user
 			if (!reportList.isSelectionEmpty()) {
+
+				// grab an instance of the ListModel that maintains the current list of reports shown in reportList
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
+				// save the index of the selected report
 				int selectedReportIndex = reportList.getSelectedIndex();
+				// ensure the report list model contains reports
 				if (!reportListModel.isEmpty()) {
+					// save the report path String of the selected report
 					reportPath = reportListModel.getElementAt(selectedReportIndex).toString();
+					// remove the selected report from the savedReportFiles set
 					savedReportFiles.remove(reportListModel.getElementAt(selectedReportIndex));
+					// remove the selected report from the report list model, and from the report list JScrollPane
 					reportListModel.removeElementAt(selectedReportIndex);
 
+					// if after the selected report is removed the report list is now empty,
+					// then disable the 'Remove Report', 'Remove All Reports', and 'Create Reports' buttons
 					if (reportListModel.isEmpty()) {
 						removeReportButton.setEnabled(false);
 						removeAllReportsButton.setEnabled(false);
 						createButton.setEnabled(false);
 					}
 
+					// removed report successfully, output status to user
 					logTextBox.append("Removed Report: " + reportPath + "\n");
 				}
 			} else {
+				// user did not select a report, output message to user
 				logTextBox.append("No Report Selected\n");
 			}
 		}
