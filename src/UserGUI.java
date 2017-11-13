@@ -15,13 +15,34 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * @author 	Ian Moreno
+ * @date		11/13/2017
+ * @purpose 	The UserGUI Class builds and displays the user interface for the Royalty Parser application.
+ */ 
+
+/**
+ * @purpose	The UserGUI class extends JFrame and is the main container/window of the GUI.
+ *			Defines, builds, and lays out each of the GUI components. 				
+ */
 public class UserGUI extends JFrame {
+	// Global class variables that need to be shared among individual components
+
+	// initialize and JFileChooser object to allow file selection as input
 	private final JFileChooser fileChooser = new JFileChooser();
+	// provides a mapping between the Author's name and corresponding ASIN/book IDs
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
+	// running list of authors contained in the authors list panel
 	private ArrayList<Author> authorsList = new ArrayList<>();
+	// provides a mapping between the String abbreviations of a currency and its 
+	// corresponding JTextField
 	private Map<String, JTextField> currencyTextFields = new HashMap<String, JTextField>();
-	private HashSet<File> savedReportFiles = new HashSet<>(); // use HashSet to maintain list of unique files
-	private File[] inputReportFiles = new File[100]; // array of multiple selection input files
+	// use HashSet to maintain a list of unique files, no duplicates.
+	private HashSet<File> savedReportFiles = new HashSet<>();
+	// Array of File objects taken in as multiple selection input 
+	// (user chose more than one file in browse window)
+	private File[] inputReportFiles = new File[100]; 
+	// GUI buttons for each panel/component
 	private JButton browseButton, 
 			addReportButton, 
 			removeReportButton, 
@@ -35,37 +56,46 @@ public class UserGUI extends JFrame {
 			removeAllASINsButton,
 			createButton,
 			cancelButton;
+	// GUI panels
 	private JPanel reportsPanel,
 			currencyPanel,
 			authorsPanel,
 			ASINsPanel,
 			buttonsPanel;
+	// GUI labels for each panel/component
 	private JLabel findReportLabel,
 			CADLabel, GBPLabel, BRLLabel,
 			INRLabel, MXNLabel, EURLabel,
 			JPYLabel, AUDLabel,
 			enterAuthorNameLabel,
 			enterASINLabel;
+
+	// GUI JTextFields for each panel/component
 	private JTextField findReportField,
 			CADField, GBPField, BRLField,
 			INRField, MXNField, EURField,
 			JPYField, AUDField,
 			enterAuthorNameField,
 			enterASINField;
+	// Lists to hold the current reports, authors, and ASINs to be presented to user
 	private JList<String> reportList,
 			authorNameList,
 			ASINsList;
+	// JScrollPanes to hold corresponding lists to be presented to user
 	private JScrollPane reportListScrollPane,
 			authorNameListScrollPane,
 			ASINsListScrollPane,
 			buttonsPanelScrollPane;
+	// JTextArea to display status messages to user
 	private JTextArea logTextBox;
 
 	/**
-	 * Constructor for UserGUI
+	 * @purpose Constructor for UserGUI that accepts one argument of ArrayList<Author>
+	 * @param 	presavedAuthorsList an ArrayList<Author> containing any previously saved authors
+	 * 			to load into the GUI for the user to select or modify
 	 */
 	public UserGUI(ArrayList<Author> presavedAuthorsList) {
-		//Create the window.
+		//Create the window to hold all components of the GUI
 		JFrame frame = new JFrame("Royalty Parser");
 		frame.setLayout(new GridLayout(0,1));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,38 +106,46 @@ public class UserGUI extends JFrame {
 		// load pre-saved authors
 		authorsList = presavedAuthorsList;
 		
+		// build each component panel
 		buildReportsPanel();
 		buildCurrencyPanel();
 		buildAuthorProfilesPanel();
 		buildASINsPanel();
 		buildButtonsPanel();
  
-		//Add content to the window.
+		// Add each panel to the JFrame window.
 		frame.add(reportsPanel);
 		frame.add(currencyPanel);
 		frame.add(authorsPanel);
 		frame.add(ASINsPanel);
 		frame.add(buttonsPanel);
  
-		//Display the window.
+		// pack JFrame
 		frame.pack();
+		// Display the JFrame window to the user.
 		frame.setVisible(true);
 	}
 
-	
-
+	/**
+	 * @purpose	private helper method builds the reports panel
+	 */
 	private void buildReportsPanel() {
+		// initialize BorderLayout component panels
 		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
-		JPanel eastPanel = new JPanel(new GridLayout(3,1));
+		JPanel eastPanel = new JPanel(new GridLayout(3,1)); // 3 rows, 1 column
 		
+		// initialize reportsPanel
 		reportsPanel = new JPanel();
+		// set border properties
 		reportsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Reports")
 				));
+		// set layout to BorderLayout
 		reportsPanel.setLayout(new BorderLayout());
 
+		// create northPanel's fields and buttons
 		findReportLabel = new JLabel("Find Reports");
 		findReportField = new JTextField(40);
 		browseButton = new JButton("Browse");
@@ -116,16 +154,20 @@ public class UserGUI extends JFrame {
 		addReportButton.addActionListener(new AddReportButtonListener());
 		addReportButton.setEnabled(false);
 
+		// add fields and buttons to northPanel
 		northPanel.add(findReportLabel);
 		northPanel.add(findReportField);
 		northPanel.add(browseButton);
 		northPanel.add(addReportButton);
 
+		// create centerPanels fields and JScrollPane 
 		reportList = new JList<String>(new DefaultListModel<String>());
 		reportList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		reportList.addListSelectionListener(new ReportListSelectionListener());
 		reportList.setVisibleRowCount(5);
 		reportListScrollPane = new JScrollPane(reportList);
+		
+		// add fields and JScrollPane to centerPanel
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(reportListScrollPane, BorderLayout.CENTER);
 
