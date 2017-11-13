@@ -263,37 +263,32 @@ public class UserGUI extends JFrame {
 		private String buildInputTextString(File[] files) {
 			// use StringBuilder to allow for easier concatenation
 			StringBuilder filesString = new StringBuilder();
-			String fileName = null;
-			String pathName = null;
-			int lastIndexOfSlash = 0;
-			
+
 			// for each selected file
 			for (File file : files) {
-				// get the pathname
-				pathName = file.getPath();
-				// if system is Windows check for index of last occurrence of backslash \ in path
-				if (System.getProperty("os.name").startsWith("Windows")) {
-					lastIndexOfSlash = pathName.lastIndexOf('\\') + 1;
-				} else { // system is ios or linux check for last occurrence of /
-					lastIndexOfSlash = pathName.lastIndexOf('/') + 1;
-				}
-
-				// grab substring of file name
-				fileName = pathName.substring(lastIndexOfSlash, pathName.length());
-				// append fileName to the total fileString
-				filesString.append(fileName + " ");
+				// append file name to the fileString
+				filesString.append(file.getName() + " ");
 			}
 
 			return filesString.toString();
 		}
 	}
 
+	/**
+	 * @purpose 	private class AddReportButtonlistener implements ActionListener 
+	 * 			and handles actionPerformed events.
+	 * @author 	Ian Moreno
+	 */
 	private class AddReportButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// handle browse button click event
+			
+			// for each inputReportFile
 			for (File inputReportFile : inputReportFiles) {
+				// save report file path String
 				String reportPath = inputReportFile.getPath();
+				// get report file name
 				String reportFileName = inputReportFile.getName();
 				String prefixKDP = "KDP Prior Month Royalties";
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
