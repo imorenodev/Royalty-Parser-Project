@@ -97,6 +97,7 @@ public class Author {
 			ASINList.add("B00FJ8YX8I");
 			ASINList.add("B00CU4S25Y");
 			ASINList.add("B06XZ6J7BT");
+			ASINList.add("B00DSADFKQ");
 		}
 		else if (name.equalsIgnoreCase("Rebecca")) {
 			ASINList.add("B00R1O4J0A");
