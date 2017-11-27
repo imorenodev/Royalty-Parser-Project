@@ -37,7 +37,7 @@ public class UserGUI extends JFrame {
 	// provides a mapping between the String abbreviations of a currency and its 
 	// corresponding JTextField
 	private Map<String, JTextField> currencyTextFields = new HashMap<String, JTextField>();
-	// use HashSet to maintain a list of unique files, no duplicates.
+	// use HashSet to maintain a list of unique files; no duplicates.
 	private HashSet<File> savedReportFiles = new HashSet<>();
 	// Array of File objects taken in as multiple selection input 
 	// (user chose more than one file in browse window)
@@ -190,7 +190,7 @@ public class UserGUI extends JFrame {
 	}
 	
 	/**
-	 * @purpose	Implement the ListSelectionListener for the ReportList
+	 * @purpose	Private inner class implements the ListSelectionListener for the ReportList
 	 * @author  	Ian Moreno
 	 */
 	private class ReportListSelectionListener implements ListSelectionListener {
@@ -201,7 +201,7 @@ public class UserGUI extends JFrame {
 	}
 
 	/**
-	 * @purpose	Implement the ActionListener for the BrowsButtonListener 
+	 * @purpose	Private inner class implements the ActionListener for the BrowsButtonListener 
 	 * @author  	Ian Moreno
 	 */
 	private class BrowseButtonListener implements ActionListener {
@@ -233,7 +233,7 @@ public class UserGUI extends JFrame {
 		
 		/**
 		 * @purpose Private inner class ExcelFileFilter extends FileFilter and allows
-		 * 			overloaded accept method to only allow user to select files ending in ".xlsx"
+		 * 			overloaded accept() method to only allow user to select files ending in ".xlsx"
 		 * @author Ian Moreno 
 		 */
 		private class ExcelFileFilter extends FileFilter {
@@ -408,6 +408,9 @@ public class UserGUI extends JFrame {
 	} // END REPORT PANEL
 	
 
+	/**
+	 * @purpose	Private helper method builds the currency conversion panel.
+	 */
 	private void buildCurrencyPanel() {
 		// initialize conversionMap with default values
 		CurrencyConverter.resetConversionMap();
@@ -419,6 +422,7 @@ public class UserGUI extends JFrame {
 				));
 		currencyPanel.setLayout(new GridLayout(3,4));
 
+		// initialize currency labels
 		CADLabel = new JLabel("Candian Dollar (CAD)");
 		GBPLabel = new JLabel("British Pound (GBP)");
 		BRLLabel = new JLabel("Brazilian Real (BRL)");
@@ -427,6 +431,7 @@ public class UserGUI extends JFrame {
 		EURLabel = new JLabel("Euro (EUR)");
 		JPYLabel = new JLabel("Japanese Yen (JPY)");
 		AUDLabel = new JLabel("Australian Dollar (AUD)");
+		// create corresponding currency text fields and their event listeners
 		CADField = new JTextField(3);
 		addCurrencyButtonListeners(CADField);
 		currencyTextFields.put("CAD", CADField);
@@ -452,6 +457,7 @@ public class UserGUI extends JFrame {
 		addCurrencyButtonListeners(AUDField);
 		currencyTextFields.put("AUD", AUDField);
 
+		// save and clear buttons
 		saveCurrencyConversionButton = new JButton("Save Conversions");
 		saveCurrencyConversionButton.addActionListener(new SaveCurrencyConversionButtonListener());
 		saveCurrencyConversionButton.setEnabled(false);
@@ -459,6 +465,7 @@ public class UserGUI extends JFrame {
 		clearCurrencyConversionButton.addActionListener(new ClearCurrencyConversionButtonListener());
 		clearCurrencyConversionButton.setEnabled(false);
 		
+		// create individual panels for each currency type
 		JPanel cadPanel = buildCurrencyPanel(CADLabel, CADField);
 		JPanel gbpPanel = buildCurrencyPanel(GBPLabel, GBPField);
 		JPanel brlPanel = buildCurrencyPanel(BRLLabel, BRLField);
@@ -474,6 +481,7 @@ public class UserGUI extends JFrame {
 		clearCurrencyButtonPanel.setSize(new Dimension(10, 5));
 		clearCurrencyButtonPanel.add(clearCurrencyConversionButton);
 
+		// add individual component currency panels and buttons to the main currencyPanel
 		currencyPanel.add(cadPanel);
 		currencyPanel.add(gbpPanel);
 		currencyPanel.add(brlPanel);
@@ -488,25 +496,39 @@ public class UserGUI extends JFrame {
 		currencyPanel.add(saveCurrencyButtonPanel);
 	}
 
+	/**
+	 * @purpose private helper method addCurrencyButtonListeners adds a DocumentListener
+	 * 			event listener to the text field
+	 * @param field JTextField component object to add event listener to.
+	 */
 	private void addCurrencyButtonListeners(JTextField field) {
 		field.getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e) {
-					enableCurrencyPanelButtons();
-				  }
-				  public void removeUpdate(DocumentEvent e) {
-					  // do nothing
-				  }
-				  public void insertUpdate(DocumentEvent e) {
-					enableCurrencyPanelButtons();
-				  }
-
-				  public void enableCurrencyPanelButtons() {
-					  saveCurrencyConversionButton.setEnabled(true);
-					  clearCurrencyConversionButton.setEnabled(true);
-				  }
-			});
+			// override DocumentListener methods
+			public void changedUpdate(DocumentEvent e) {
+				// when JTextField object registers a change
+				enableCurrencyPanelButtons();
+			}
+			public void removeUpdate(DocumentEvent e) {
+				// do nothing
+			}
+			public void insertUpdate(DocumentEvent e) {
+				// when JTextField object registers characters typed into field.
+				enableCurrencyPanelButtons();
+			}
+			// helper method that enables the save and clear buttons on the currency conversion panel
+			public void enableCurrencyPanelButtons() {
+				saveCurrencyConversionButton.setEnabled(true);
+				clearCurrencyConversionButton.setEnabled(true);
+			}
+		});
 	}
 
+	/**
+	 * @puropse 	private helper method buildCurrencyPanel constructs a JTextField component panel
+	 * @param label JLabel for currency conversion object
+	 * @param field JTextField for currency conversion object
+	 * @return JPanel panel containing the label and field the currency conversion component
+	 */
 	private JPanel buildCurrencyPanel(JLabel label, JTextField field) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
@@ -515,41 +537,66 @@ public class UserGUI extends JFrame {
 		return panel;
 	}
 	
+	/**
+	 * @purpose	private inner class that implements ActionListener for the clear button on the currency conversion panel
+	 * @author ianmoreno
+	 *
+	 */
 	private class ClearCurrencyConversionButtonListener implements ActionListener {
 		@Override
+		// handle browse button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// zero-out the currency conversion map values
 			CurrencyConverter.resetConversionMap();
 			JTextField field = new JTextField();
 			
+			// build iterator to cycle through each of the 'values' contained in the 
+			// currencyTextFields map. Each 'value' is a JTextField belonging to a currency conversion component
 			Iterator<JTextField> currencyFieldsIterator = currencyTextFields.values().iterator();
 			while (currencyFieldsIterator.hasNext()) {
+				// get next JTextField from iterator
 				field = currencyFieldsIterator.next();
+				// set the text field to empty
 				field.setText("");
 			}
+			// disable the save and clear buttons on the currency conversion panel
 			saveCurrencyConversionButton.setEnabled(false);
 			clearCurrencyConversionButton.setEnabled(false);
 		}
 	} 
 
+	/**
+	 * @purpose 	private inner class SaveCurrencyConversionButtonListern implements ActionListener for the save button
+	 * @author ianmoreno
+	 *
+	 */
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
 		@Override
+		// handle browse button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
 			CurrencyConverter.resetConversionMap(); // clear conversionMap
 			String currencyType = "";
 			Double conversionFactor = 0.0;
+			// create iterator for each currency field component in currencyTextFields map
 			Iterator currencyFieldsIterator = currencyTextFields.entrySet().iterator();
+			// initialize currencyField variable outside the while loop
 			JTextField currencyField = new JTextField();
 			
 			while (currencyFieldsIterator.hasNext()) {
+				// handle next entry in the map
 				Map.Entry fieldEntry = (Map.Entry)currencyFieldsIterator.next();
+				// assign currencyField to the currency JTextField being iterated over
 				currencyField = (JTextField)fieldEntry.getValue();
 
-				if (currencyField != null && !currencyField.getText().equals("")) {
+				// if currencyField isn't null AND it isn't empty
+				if (currencyField != null && !currencyField.getText().trim().equals("")) {
+					// save the currency type String value
 					currencyType = fieldEntry.getKey().toString();
+					// save the conversion factor
 					conversionFactor = Double.valueOf(currencyField.getText());
+					// add key, value pair to conversionMap
 					CurrencyConverter.conversionMap.put(currencyType, conversionFactor);
+					// output result status to user
 					logTextBox.append("Added Currency Type: " + currencyType + ": Conversion Factor: " + conversionFactor + "\n");
 				}
 			}
@@ -557,11 +604,16 @@ public class UserGUI extends JFrame {
 	} // END CURRENCY PANEL
 
  
+	/**
+	 * @purpose	private helper method builds the author profiles panel
+	 */
 	private void buildAuthorProfilesPanel() {
+		// initialize the component panels
 		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		JPanel eastPanel = new JPanel(new GridLayout(3,1));
 		
+		// initialize main authors Panel and set the border and layout properties
 		authorsPanel = new JPanel();
 		authorsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
@@ -569,28 +621,39 @@ public class UserGUI extends JFrame {
 				));
 		authorsPanel.setLayout(new BorderLayout());
 
+		// create JLabel and JTextField and action listener for the author name field
 		enterAuthorNameLabel = new JLabel("Enter New Author");
 		enterAuthorNameField = new JTextField(40);
 		addAuthorPanelButtonListener(enterAuthorNameField);
 
+		// create the add author button, it's action listener, and set button to enabled
 		addAuthorButton = new JButton("Add Author");
 		addAuthorButton.addActionListener(new AddAuthorButtonListener());
 		addAuthorButton.setEnabled(false);
 
+		// add the author name field and add author button to the north panel
 		northPanel.add(enterAuthorNameLabel);
 		northPanel.add(enterAuthorNameField);
 		northPanel.add(addAuthorButton);
 
+		// create a JList named authorNameList that holds String objects.
+		// initialize authorNameList with a DefaultListModel of type String
 		authorNameList = new JList<String>(new DefaultListModel<String>());
+		// grab an instance of the DefaultListModel being used to control the authorNameList JList.
 		DefaultListModel authorNameListModel = (DefaultListModel)authorNameList.getModel();
 
 		// populate authorList with presaved author names
 		String authorName = "";
+		// initialize ArrayList, outside of loop, that will hold author's corresponding ASINs
 		ArrayList<String> authorsASINs = new ArrayList<>();
 		for (Author a : authorsList) {
+			// save author's name
 			authorName = a.getName();
+			// grab their list of ASINs
 			authorsASINs = (ArrayList)a.getASINList();
+			// add the new author's name to the JList that displays the list of author names
 			authorNameListModel.addElement(a.getName());
+			// add the author's name and list of ASINs to the authorToASINMap
 			authorToASINMap.put(authorName, authorsASINs);
 		}
 
