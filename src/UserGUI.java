@@ -544,7 +544,7 @@ public class UserGUI extends JFrame {
 	 */
 	private class ClearCurrencyConversionButtonListener implements ActionListener {
 		@Override
-		// handle browse button click event
+		// handle clear currency button click event
 		public void actionPerformed(ActionEvent e) {
 			// zero-out the currency conversion map values
 			CurrencyConverter.resetConversionMap();
@@ -572,7 +572,7 @@ public class UserGUI extends JFrame {
 	 */
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
 		@Override
-		// handle browse button click event
+		// handle save currency button click event
 		public void actionPerformed(ActionEvent e) {
 			CurrencyConverter.resetConversionMap(); // clear conversionMap
 			String currencyType = "";
@@ -657,57 +657,85 @@ public class UserGUI extends JFrame {
 			authorToASINMap.put(authorName, authorsASINs);
 		}
 
+		// add an event listener to authorNameList to capture whenever an author's name is selected
 		authorNameList.addListSelectionListener(new AuthorNameListSelectionListener());
+		// allow user to select only one author at a time
 		authorNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// allow only 5 author names at a time to appear visible within the JList 
 		authorNameList.setVisibleRowCount(5);
+		// add authorNameList JList to a JScrollPane 
 		authorNameListScrollPane = new JScrollPane(authorNameList);
 		centerPanel.setLayout(new BorderLayout());
+		// add the scroll pane to the center panel 
 		centerPanel.add(authorNameListScrollPane, BorderLayout.CENTER);
 
+		// create remove author button and it's event listener, and set to disabled initially
 		removeAuthorButton = new JButton("Remove Author");
 		removeAuthorButton.addActionListener(new RemoveAuthorButtonListener());
 		removeAuthorButton.setEnabled(false);
 
+		// add the remove author button to the east panel
 		eastPanel.add(removeAuthorButton);
 		
+		// add north, center, and east component panels to the main author's panel
 		authorsPanel.add(northPanel, BorderLayout.NORTH);
 		authorsPanel.add(centerPanel, BorderLayout.CENTER);
 		authorsPanel.add(eastPanel, BorderLayout.EAST);
 	}
 	
+	/**
+	 * @purpose 	Private helper method adds a Document Event Listener for the author entry JTextField
+	 * @param field JTextField object where user enters a new author name
+	 */
 	private void addAuthorPanelButtonListener(JTextField field) {
 		field.getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e) {
-					enableAuthorPanelButtons();
-				  }
-				  public void removeUpdate(DocumentEvent e) {
-					  // do nothing
-				  }
-				  public void insertUpdate(DocumentEvent e) {
-					enableAuthorPanelButtons();
-				  }
+			// handle when user makes a change to the JTextField
+			public void changedUpdate(DocumentEvent e) {
+				enableAuthorPanelButtons();
+			}
 
-				  public void enableAuthorPanelButtons() {
-					  addAuthorButton.setEnabled(true);
-					  removeAuthorButton.setEnabled(true);
-				  }
-			});
+			public void removeUpdate(DocumentEvent e) {
+				// do nothing
+			}
+
+			// handle when user inserts a character into the JTextField
+			public void insertUpdate(DocumentEvent e) {
+				enableAuthorPanelButtons();
+			}
+
+			// enable the add author and remove author buttons
+			public void enableAuthorPanelButtons() {
+				addAuthorButton.setEnabled(true);
+				removeAuthorButton.setEnabled(true);
+			}
+		});
 	}
 
+	/**
+	 * @purpose	Private inner class implmenets the List Selection Action Listener for the authorNameList
+	 * @author ianmoreno
+	 *
+	 */
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
 		@Override
+		// handle list selection event
 		public void valueChanged(ListSelectionEvent e) {
-			// handle list selection event
+			// grab an instance of the list model controlling the authorNameList JList entries
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+			// grab an instance of the list model controlling the ASINsList JList entries
 			DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 			int selectedIndex = authorNameList.getSelectedIndex();
 			
+			// if a valid author is chosen from the list
 			if (selectedIndex >= 0) {
+				// grab the selected author's name
 				String authorName = authorListModel.getElementAt(authorNameList.getSelectedIndex()).toString();
-				// check to see if author has any saved ASINs
+				// clear out the ASINsList that may be previously displayed for another author
 				ASINsListModel.clear();
+				// enable the remove author button 
 				removeAuthorButton.setEnabled(true);
 
+				// check to see if author has any saved ASINs
 				if (authorName != null) { // check to make sure author isn't already previously deleted
 					if (authorToASINMap.containsKey(authorName)) {
 						// get the list of saved ASINs
@@ -716,47 +744,72 @@ public class UserGUI extends JFrame {
 							// add each ASIN to the authorListModel
 							ASINsListModel.addElement(aName);
 						}
+						// enable the remove all ASINs button now that there are ASINs to remove
 						removeAllASINsButton.setEnabled(true);
 					}
 				}
 			} else {
+				// output error message to user
 				logTextBox.append("ERROR: No Author Selected\n");
 			}
 		}
 	}
 	
+	/**
+	 * @purpose Private inner class implements ActionListener for the add author button
+	 * @author ianmoreno
+	 *
+	 */
 	private class AddAuthorButtonListener implements ActionListener {
 		@Override
+		// handle add author button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// save author's name from the enterAuthorNameField
 			String authorName = enterAuthorNameField.getText();
+			// grab an instance of the DefaultListModel handling the contents of authorList 
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
 			
-			if (authorName != null && !authorName.equals("")) {
+			// if authorName isn't null AND the authorName isn't empty
+			if (authorName != null && !authorName.trim().equals("")) {
 				// if author name is not already present, add it to authorNamesList
 				if (!authorListModel.contains(authorName)) {
+					// add to the authorNameList via the authorListModel controller
 					authorListModel.addElement(authorName);
+					// add the author name and an empty ArrayList pair to authorToASINMap
 					authorToASINMap.put(authorName, new ArrayList<String>());
+					// output resulting status to user
 					logTextBox.append("Added Author: " + authorName + "\n");
 				} else {
+					// output error message to user
 					logTextBox.append("ERROR Author Name Already Added\n");
 				}
 				enterAuthorNameField.setText(""); // clear the enterAuthorNameField text box
 			} else {
+				// output error message to user
 				logTextBox.append("Enter an Author Name\n");
 			}
+			// disable the add author button until user adds content to the enterAuthorNameField
 			addAuthorButton.setEnabled(false);
 		}
 	}
 
+	/**
+	 * @purpose 	Private inner class implements ActionListener for the remove author button
+	 * @author ianmoreno
+	 *
+	 */
 	private class RemoveAuthorButtonListener implements ActionListener {
 		@Override
+		// handle remove author button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// if there is a valid author selected in the authorNameList
 			if (!authorNameList.isSelectionEmpty()) {
+				// grab an instance of the DefaultListModel controlling the authorNameList JList
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				// grab an instance of the DefaultListModel controlling the ASINsList JList
 				DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				// save selected author's name
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
 				// if the list is not empty and there is an author name selected
 				if (!authorListModel.isEmpty() && selectedAuthorIndex >= 0) {
@@ -766,12 +819,16 @@ public class UserGUI extends JFrame {
 					authorListModel.removeElementAt(selectedAuthorIndex);
 					// clear ASINs from the ASINsList
 					ASINsListModel.clear(); 
+					// log status result to user
 					logTextBox.append("Removed Author: " + authorName + "\n");
+					// disable the remove author button until another author is selected
 					removeAuthorButton.setEnabled(false);
 				} else {
+					// log error to user
 					logTextBox.append("No Author Selected\n");
 				}
 			} else {
+				// log error to user
 				logTextBox.append("No Author Selected\n");
 			}
 		}
