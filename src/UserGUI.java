@@ -292,7 +292,7 @@ public class UserGUI extends JFrame {
 				String reportFileName = inputReportFile.getName();
 				// save the file name prefix that all valid KDP report file names should contain
 				String prefixKDP = "KDP Prior Month Royalties";
-				// grab an instance of the ListModel that maintains the current list of reports shown in reportList
+				// grab a reference to the ListModel that maintains the current list of reports shown in reportList
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
 				// ensure reportPath is not null or empty and ensure the fileName begins with "KDP Prior Month Royalties"
@@ -337,7 +337,7 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// handle 'Remove All Reports' button click event
 
-			// grab an instance of the ListModel that maintains the current list of reports shown in reportList
+			// grab a reference to the ListModel that maintains the current list of reports shown in reportList
 			DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 
 			// if the reportList contains reports
@@ -376,7 +376,7 @@ public class UserGUI extends JFrame {
 			// if a report is selected by user
 			if (!reportList.isSelectionEmpty()) {
 
-				// grab an instance of the ListModel that maintains the current list of reports shown in reportList
+				// grab a reference to the ListModel that maintains the current list of reports shown in reportList
 				DefaultListModel reportListModel = (DefaultListModel)reportList.getModel();
 				// save the index of the selected report
 				int selectedReportIndex = reportList.getSelectedIndex();
@@ -539,7 +539,7 @@ public class UserGUI extends JFrame {
 	
 	/**
 	 * @purpose	private inner class that implements ActionListener for the clear button on the currency conversion panel
-	 * @author ianmoreno
+	 * @author Ian Moreno
 	 *
 	 */
 	private class ClearCurrencyConversionButtonListener implements ActionListener {
@@ -567,7 +567,7 @@ public class UserGUI extends JFrame {
 
 	/**
 	 * @purpose 	private inner class SaveCurrencyConversionButtonListern implements ActionListener for the save button
-	 * @author ianmoreno
+	 * @author Ian Moreno
 	 *
 	 */
 	private class SaveCurrencyConversionButtonListener implements ActionListener {
@@ -639,7 +639,7 @@ public class UserGUI extends JFrame {
 		// create a JList named authorNameList that holds String objects.
 		// initialize authorNameList with a DefaultListModel of type String
 		authorNameList = new JList<String>(new DefaultListModel<String>());
-		// grab an instance of the DefaultListModel being used to control the authorNameList JList.
+		// grab a reference to the DefaultListModel being used to control the authorNameList JList.
 		DefaultListModel authorNameListModel = (DefaultListModel)authorNameList.getModel();
 
 		// populate authorList with presaved author names
@@ -713,16 +713,16 @@ public class UserGUI extends JFrame {
 
 	/**
 	 * @purpose	Private inner class implmenets the List Selection Action Listener for the authorNameList
-	 * @author ianmoreno
+	 * @author Ian Moreno
 	 *
 	 */
 	private class AuthorNameListSelectionListener implements ListSelectionListener {
 		@Override
 		// handle list selection event
 		public void valueChanged(ListSelectionEvent e) {
-			// grab an instance of the list model controlling the authorNameList JList entries
+			// grab a reference to the list model controlling the authorNameList JList entries
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
-			// grab an instance of the list model controlling the ASINsList JList entries
+			// grab a reference to the list model controlling the ASINsList JList entries
 			DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 			int selectedIndex = authorNameList.getSelectedIndex();
 			
@@ -757,7 +757,7 @@ public class UserGUI extends JFrame {
 	
 	/**
 	 * @purpose Private inner class implements ActionListener for the add author button
-	 * @author ianmoreno
+	 * @author Ian Moreno
 	 *
 	 */
 	private class AddAuthorButtonListener implements ActionListener {
@@ -766,7 +766,7 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// save author's name from the enterAuthorNameField
 			String authorName = enterAuthorNameField.getText();
-			// grab an instance of the DefaultListModel handling the contents of authorList 
+			// grab a reference to the DefaultListModel handling the contents of authorList 
 			DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
 			
 			// if authorName isn't null AND the authorName isn't empty
@@ -795,7 +795,7 @@ public class UserGUI extends JFrame {
 
 	/**
 	 * @purpose 	Private inner class implements ActionListener for the remove author button
-	 * @author ianmoreno
+	 * @author Ian Moreno
 	 *
 	 */
 	private class RemoveAuthorButtonListener implements ActionListener {
@@ -804,9 +804,9 @@ public class UserGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// if there is a valid author selected in the authorNameList
 			if (!authorNameList.isSelectionEmpty()) {
-				// grab an instance of the DefaultListModel controlling the authorNameList JList
+				// grab a reference to the DefaultListModel controlling the authorNameList JList
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
-				// grab an instance of the DefaultListModel controlling the ASINsList JList
+				// grab a reference to the DefaultListModel controlling the ASINsList JList
 				DefaultListModel ASINsListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
 				// save selected author's name
@@ -835,11 +835,16 @@ public class UserGUI extends JFrame {
 	} // END AUTHOR PROFILES
 
 
+	/**
+	 * @purpose	private helper method builds the ASINs panel
+	 */
 	private void buildASINsPanel() {
+		// initialize the north, center, and east panels
 		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
-		JPanel eastPanel = new JPanel(new GridLayout(3,1));
+		JPanel eastPanel = new JPanel(new GridLayout(3,1)); // 3 rows 1 column
 		
+		// create the main ASINsPanel, set the border and layout properties
 		ASINsPanel = new JPanel();
 		ASINsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
@@ -847,26 +852,37 @@ public class UserGUI extends JFrame {
 				));
 		ASINsPanel.setLayout(new BorderLayout());
 
+		// create the ASINLabel and corresponding JTextField and add it's event listener
 		enterASINLabel = new JLabel("Enter New ASINs");
 		enterASINField = new JTextField(40);
 		addASINPanelButtonListener(enterASINField);
 
+		// create add ASIN button, add it's event listener, and set disabled initially
 		addASINButton = new JButton("Add ASIN");
 		addASINButton.addActionListener(new AddASINButtonListener());
 		addASINButton.setEnabled(false);
 
+		// add the ASINLabel, ASINField, and ASIN button to the north panel
 		northPanel.add(enterASINLabel);
 		northPanel.add(enterASINField);
 		northPanel.add(addASINButton);
 
+		// create a JList to hold the list of ASINs, initializing with a DefaultListMode of type String
 		ASINsList = new JList<String>(new DefaultListModel<String>());
+		// allow user to select only one ASIN at a time
 		ASINsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// add a list selection event listener to the ASINsList
 		ASINsList.addListSelectionListener(new ASINsListSelectionListener());
+		// 5 rows visible in window
 		ASINsList.setVisibleRowCount(5);
+		// add ASINsList to a scroll pane
 		ASINsListScrollPane = new JScrollPane(ASINsList);
+		// add the scroll pane to the center panel
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(ASINsListScrollPane, BorderLayout.CENTER);
 
+		// create remove ASIN button and remove all ASINs button, and corresponding event listeners
+		// set both to disable initially
 		removeASINButton = new JButton("Remove ASIN");
 		removeASINButton.addActionListener(new RemoveASINButtonListener());
 		removeASINButton.setEnabled(false);
@@ -874,94 +890,136 @@ public class UserGUI extends JFrame {
 		removeAllASINsButton.addActionListener(new RemoveAllASINsButtonListener());
 		removeAllASINsButton.setEnabled(false);
 
+		// add both buttons to the east panel
 		eastPanel.add(removeASINButton);
 		eastPanel.add(removeAllASINsButton);
 		
+		// add the north, center, and east panels to the main ASINsPanel
 		ASINsPanel.add(northPanel, BorderLayout.NORTH);
 		ASINsPanel.add(centerPanel, BorderLayout.CENTER);
 		ASINsPanel.add(eastPanel, BorderLayout.EAST);
 	}
 
+	/**
+	 * @purpose private helper method adds a DocumentListener event listener to the enterASINField JTextField
+	 * @param field JTextField representing the enterASINField to add a listener to
+	 */
 	private void addASINPanelButtonListener(JTextField field) {
 		field.getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e) {
-					enableASINPanelButtons();
-				  }
-				  public void removeUpdate(DocumentEvent e) {
-					  // do nothing
-				  }
-				  public void insertUpdate(DocumentEvent e) {
-					enableASINPanelButtons();
-				  }
+			// handle the add ASIN field entry
+			public void changedUpdate(DocumentEvent e) {
+				enableASINPanelButtons();
+			}
 
-				  public void enableASINPanelButtons() {
-					  //removeASINButton.setEnabled(true);
-					  //removeAllASINsButton.setEnabled(true);
-					  addASINButton.setEnabled(true);
-				  }
-			});
+			public void removeUpdate(DocumentEvent e) {
+				// do nothing
+			}
+
+			// handle when a character is entered into the JTextField
+			public void insertUpdate(DocumentEvent e) {
+				enableASINPanelButtons();
+			}
+
+			// enable the addASIN button
+			public void enableASINPanelButtons() {
+				addASINButton.setEnabled(true);
+			}
+		});
 	}
 	
+	/**
+	 * @purpose 	Private inner class implements List Selection Action Listener for the ASINs List
+	 * @author Ian Moreno
+	 *
+	 */
 	private class ASINsListSelectionListener implements ListSelectionListener {
 		@Override
+		// handle list selection event
 		public void valueChanged(ListSelectionEvent e) {
-			// handle list selection event
+			// set remove ASIN and remove all ASINs buttons both to enabled
 			removeASINButton.setEnabled(true);
 			removeAllASINsButton.setEnabled(true);
 		}
 	}
 	
+	/**
+	 * @purpose 	Private inner class implements ActionListener for the add ASIN button
+	 */
 	private class AddASINButtonListener implements ActionListener {
 		@Override
+		// handle Add ASIN button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// if an author name is selected in the authorNameList
 			if (!authorNameList.isSelectionEmpty()) {
+				// grab a reference to the authorNameList's DefaulListModel that controls the entries in authorNameList
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				// grab a reference to the ASINsList's DefaulListModel that controls the entries in ASINsList
 				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
+				// save the selected author's name
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
 
 				// first replace duplicate commas and leading spaces from enterASINField String
 				// the split the String wherever a comma or space occurs and place each entry into String[] ASINs
 				String[] ASINs = enterASINField.getText().replaceAll("^[,\\s]+", "").split("[,\\s]+");
+				// grab a reference to the ArrayList of all the author's saved ASINs
 				ArrayList<String> asins = authorToASINMap.get(authorName);
 				
+				// if the list of author's ASINs isn't null or empty
 				if (asins != null && ASINs != null) {
+					// for each new ASIN to be added
 					for (int i = 0; i < ASINs.length; i++) {
 						if (ASINs[i] != null && !ASINs[i].isEmpty()) {
+							// if the new ASIN isn't already present in the author's ASINsList
 							if (!asins.contains(ASINs[i])) {
+								// add new unique ASIN to the author's  ASINsList
 								asins.add(ASINs[i]);
+								// add the new ASIN to the ASINListModel for display in the JList
 								ASINListModel.addElement(ASINs[i]);
 
+								// output status message to user
 								logTextBox.append("Added ASIN: " + ASINs[i] + "\n");
 							} else {
+								// output error message to user
 								logTextBox.append("ERROR ASIN Already Present\n");
 							}
+							// clear the ASIN entry field
 							enterASINField.setText("");
 						} else {
+							// output error message to user
 							logTextBox.append("Please Enter an ASIN\n");
 						}
 					}
 				}
+				// enable the add ASIN button
 				addASINButton.setEnabled(false);
 			} else {
+				// output error message to user
 				logTextBox.append("Please Select an Author\n");
 			}
 		}
 	}
 
+	/**
+	 * @purpose 	Private inner class implements action listener for remove all ASINs button
+	 * @author Ian Moreno
+	 *
+	 */
 	private class RemoveAllASINsButtonListener implements ActionListener {
 		@Override
+		// handle remove all ASINs button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
-			
 			// if an author is selected
 			if (!authorNameList.isSelectionEmpty()) {
+				// grab a reference to the authorListModel controlling authorNameList JList entries
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
+				// grab a reference to the ASINListModel controlling ASINsList JList entries
 				DefaultListModel ASINListModel = (DefaultListModel)ASINsList.getModel();
 				int selectedAuthorIndex = authorNameList.getSelectedIndex();
 				int selectedASINIndex = ASINsList.getSelectedIndex();
+				// save author name
 				String authorName = authorListModel.getElementAt(selectedAuthorIndex).toString();
+				// grab a reference to the ArrayList of author's saved ASINs
 				ArrayList<String> asins = authorToASINMap.get(authorName); // get authors ASIN list
 				
 				asins.clear(); // remove all ASINs from list
@@ -974,11 +1032,14 @@ public class UserGUI extends JFrame {
 		}
 	}
 
+	/**
+	 * @purpose 	Private inner class implements ActionListener for the remove ASIN button
+	 * @author Ian Moreno
+	 */
 	private class RemoveASINButtonListener implements ActionListener {
 		@Override
+		// handle remove ASIN button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
-			
 			// if an ASIN is selected, and author is selected
 			if (!ASINsList.isSelectionEmpty() && !authorNameList.isSelectionEmpty()) {
 				DefaultListModel authorListModel = (DefaultListModel)authorNameList.getModel();
@@ -1003,18 +1064,25 @@ public class UserGUI extends JFrame {
 	} //END ASINs 
 	
 	
+	/**
+	 * @purpose 	private helper method builds the buttons panel
+	 */
 	private void buildButtonsPanel() {
+		// create the main button panel and set it's border properties
 		buttonsPanel = new JPanel(new BorderLayout());
 		buttonsPanel.setBackground(Color.LIGHT_GRAY);
 		buttonsPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createEmptyBorder(10, 10, 10, 10), 
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK, 1), "Status Messages")
 				));
+		// create buttons container and set its layout properties
 		JPanel buttonsContainer = new JPanel(new FlowLayout());
 		buttonsContainer.setBackground(Color.LIGHT_GRAY);
+
+		// create the log container and set its background and layout properties
 		JPanel logContainer = new JPanel(new FlowLayout());
 		logContainer.setBackground(Color.LIGHT_GRAY);
-		logTextBox = new JTextArea(5, 60);
+		logTextBox = new JTextArea(5, 60); // 5 rows 60 charactes wide
 		buttonsPanelScrollPane = new JScrollPane(logTextBox);
 		logContainer.add(buttonsPanelScrollPane);
 
@@ -1027,26 +1095,41 @@ public class UserGUI extends JFrame {
 		cancelButton.addActionListener(new CancelButtonListener());
 		buttonsContainer.add(cancelButton);
 		
+		// add log container and buttons container to the main buttonsPanel
 		buttonsPanel.add(logContainer, BorderLayout.CENTER);
 		buttonsPanel.add(buttonsContainer, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * @purpose 	Private helper class implement Action Listener for the create button 
+	 * @author Ian Moreno
+	 *
+	 */
 	private class CreateButtonListener implements ActionListener {
 		@Override
+		// handle create button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// if the authorToASINMap isn't empty and savedReportFiles isn't empty 
 			if (!authorToASINMap.isEmpty() && !savedReportFiles.isEmpty()) {
+				// create reports for every saved author, given each saved report
 				ReportGenerator.createReport(authorToASINMap, savedReportFiles);
 			} else {
+				// output error message to user
 				logTextBox.append("ERROR CANNOT CREATE REPORTS\n");
 			}
 		}
 	}
 
+	/**
+	 * @purpose	Private inner class implement action listen for the cancel button
+	 * @author Ian Moreno
+	 *
+	 */
 	private class CancelButtonListener implements ActionListener {
 		@Override
+		// handle cancel button click event
 		public void actionPerformed(ActionEvent e) {
-			// handle browse button click event
+			// exit
 			System.exit(0);
 		}
 	} //END ButtonsPanel
