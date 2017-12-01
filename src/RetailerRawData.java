@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  * @purpose	RetailerRawData class takes a given filepath to a valid, local Amazon royalty spreadsheet and returns
  * 			a list of Book objects containing each book entry (spreadsheet row) and a map of its data items (spreadsheet columns)
  * @author Ian Moreno 
+ * @date 12/1/2017
  */
 
 public class RetailerRawData {

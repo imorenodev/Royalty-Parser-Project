@@ -1,9 +1,21 @@
 import java.util.*;
 
+/**
+ * @purpose Author class specifies the author objects
+ * @author Ian Moreno
+ * @date 12/1/2017
+ */
+
 public class Author {
+	// List of the author's ASINs
 	private List<String> ASINList = new ArrayList<>();
+	// Author's name
 	private String name = "Author";
 	
+	/**
+	 * @purpose constructor initializes the author's name and load's their corresponding saved ASIN list if it exists
+	 * @param aName String variable representing the Author's name
+	 */
 	public Author(String aName) {
 		if (aName != null) {
 			name = aName;
@@ -11,23 +23,45 @@ public class Author {
 		}
 	}
 
+	/**
+	 * @purpose constructor initializes the author's name and assigns their ASIN list to the passed in argument
+	 * @param aName String variable representing the Author's name
+	 * @param asinList List of ASINs belonging to the author
+	 */
 	public Author(String aName, List<String> asinList) {
 		if (aName != null) name = aName;
 		ASINList = asinList;
 	}
 	
+	/**
+	 * @purpose public method returns the author's name
+	 * @return String variable name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * @purpose public method returns a deep copy of the author's ASINList
+	 * @return ArrayList deep copy of the author's ASINList
+	 */
 	public List<String> getASINList() {
 		return new ArrayList<>(ASINList);
 	}
 	
+	/**
+	 * @purpose setter method sets the author's ASINList
+	 * @param asinList List of ASINs belonging to the author
+	 */
 	public void setASINList(List<String> asinList) {
 		ASINList = asinList;
 	}
 	
+	/**
+	 * @purpose public method allows user to remove a single ASIN from the author's ASINList
+	 * @param asin String variable representing the ASIN to be removed from the author's ASINList
+	 * @return boolean value true if removal successful, otherwise false
+	 */
 	public boolean removeASIN(String asin) {
 		boolean removedSuccessfully = false;
 		
@@ -39,6 +73,11 @@ public class Author {
 		return removedSuccessfully;
 	}
 	
+	/**
+	 * @purpose public method allows user to remove a list of ASIN values from the author's ASINList
+	 * @param asinList List of the ASINs to be removed from the author's ASINList
+	 * @return boolean value true if removeAll successful, otherwise false
+	 */
 	public boolean removeAllASIN(List<String> asinList) {
 		boolean removedSuccessfully = false;
 		
@@ -49,16 +88,27 @@ public class Author {
 		return removedSuccessfully;
 	}
 	
+	/**
+	 * @purpose overridden toString method to provide more meaningful information about Author object
+	 */
 	public String toString() {
+		// mutable StringBuilder object
 		StringBuilder asinString = new StringBuilder();
 		
+		// for each ASIN in the author's ASINList, append to the stringbuilder object
 		for (String s : ASINList) {
 			asinString.append((" " + s.toString()));
 		}
 
+		// return the .toString() value of the stringbuilder object
 		return ("Name: " + name + " ASINs:" + asinString);
 	}
 	
+	/**
+	 * @purpose private helper method contains hard-coded, pre-saved author ASIN data
+	 * 			builds the author's ASINList when the Author object is created and the name matches
+	 * 			a pre-saved author name. Mostly for demonstration purposes.
+	 */
 	private void loadSavedASINs() {
 		if (name.equalsIgnoreCase("Claire")) {
 			ASINList.add("B00W4DJA5M");
