@@ -29,7 +29,7 @@ public class UserGUI extends JFrame {
 	// Global class variables that need to be shared among individual components
 
 	// initialize and JFileChooser object to allow file selection as input
-	private final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home") + "/Desktop/Input/");
+	private final JFileChooser FILE_CHOOSER = new JFileChooser(System.getProperty("user.home") + "/Desktop/Input/");
 	// provides a mapping between the Author's name and corresponding ASIN/book IDs
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	// running list of authors contained in the authors list panel
@@ -101,7 +101,7 @@ public class UserGUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// allow user to select multiple files at once
-		fileChooser.setMultiSelectionEnabled(true);
+		FILE_CHOOSER.setMultiSelectionEnabled(true);
 		
 		// load pre-saved authors
 		authorsList = presavedAuthorsList;
@@ -210,14 +210,14 @@ public class UserGUI extends JFrame {
 			// handle browse button click event
 			if (e.getSource() == browseButton) {
 				// only allow KDP Excel reports to be selected by user
-				fileChooser.setFileFilter(new ExcelFileFilter());
-				int returnVal = fileChooser.showOpenDialog(UserGUI.this);
+				FILE_CHOOSER.setFileFilter(new ExcelFileFilter());
+				int returnVal = FILE_CHOOSER.showOpenDialog(UserGUI.this);
 	 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					//Handle opening files.
 					
 					// save all selected input files in an array
-					inputReportFiles = fileChooser.getSelectedFiles();
+					inputReportFiles = FILE_CHOOSER.getSelectedFiles();
 					// update the browse text field with selected file names
 					findReportField.setText(buildInputTextString(inputReportFiles));
 
