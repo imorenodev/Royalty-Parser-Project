@@ -61,8 +61,8 @@ public class ReportGenerator {
     			// build the amazonReport
     			AuthorReport amazonReport = new AuthorReport(reportName, bookData, authorsAndASINs.get(authorName));
     			// print data to console
-    			System.out.println(authorName);
-    			System.out.println(amazonReport);
+    			//System.out.println(authorName);
+    			//System.out.println(amazonReport);
 
     			// write the new report spreadsheet for the corresponding author
     			writeXLSXSpreadSheet(reportName, amazonReport);
@@ -184,9 +184,9 @@ public class ReportGenerator {
 		try { // create new FileOutputStream object
 			fileOut = new FileOutputStream(new File(reportFileName));
 		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: " + e.getMessage());
+			//System.out.println("ERROR: " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("ERROR: " + e.getMessage());
+			//System.out.println("ERROR: " + e.getMessage());
 		} finally {
 			try {
 				//write this workbook to an Outputstream.
@@ -194,7 +194,7 @@ public class ReportGenerator {
 				fileOut.flush(); // flush the stream buffer
 				fileOut.close();	 // close the FileOutputStream
 			} catch (IOException e) {
-				System.out.println("ERROR: " + e.getMessage());
+				//System.out.println("ERROR: " + e.getMessage());
 			}
 		}
 	}
