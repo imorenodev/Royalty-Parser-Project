@@ -34,16 +34,17 @@ public class ReportGenerator {
 	 * @purpose public static method takes in the authorsAndASINs map and the set of entered reports and outputs a custom report
 	 * @param authorsAndASINs Mapping from each author and their corresponding ASINs
 	 * @param reports set of the Amazon reports to parse
+	 * @return returns true if the reports are generated successfully
 	 */
-	public static void createReport(Map<String, ArrayList> authorsAndASINs, HashSet<File> reports) {
-		// set of the authors enterd
+	public static boolean createReport(Map<String, ArrayList> authorsAndASINs, HashSet<File> reports) {
+		// set of the authors entered
 		Set authors = authorsAndASINs.keySet();
 		// initialize the bookData ArrayList
 		ArrayList<Book> bookData = new ArrayList<>();
 		
-		// for each report spreadhseet entered
+		// for each report spreadsheet entered
 		for (File report : reports) {
-			// add the List of Book's in the report to the bookData Arraylist
+			// add the List of Book's in the report to the bookData ArrayList
 			bookData.addAll((ArrayList)RetailerRawData.getData(report.getPath()));
 		}
 		
@@ -66,6 +67,7 @@ public class ReportGenerator {
     			// write the new report spreadsheet for the corresponding author
     			writeXLSXSpreadSheet(reportName, amazonReport);
     		}
+		return true;
 	}
 	
 	/**
@@ -75,7 +77,8 @@ public class ReportGenerator {
 	 * @param amazonReport AuthorReport containing all the bookData belonging to the author
 	 */
 	private static void writeXLSXSpreadSheet(String reportName, AuthorReport amazonReport) {
-		String reportFileName = (reportName + ".xlsx"); //name of excel file
+		String userHomeFolder = System.getProperty("user.home") + "/Desktop/Output/";
+		String reportFileName = (userHomeFolder + reportName + ".xlsx"); //name of excel file
 		String sheetName = "Amazon Royalties"; //name of sheet
 
 		// declare new workbook object

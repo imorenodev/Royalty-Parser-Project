@@ -29,7 +29,7 @@ public class UserGUI extends JFrame {
 	// Global class variables that need to be shared among individual components
 
 	// initialize and JFileChooser object to allow file selection as input
-	private final JFileChooser fileChooser = new JFileChooser();
+	private final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home") + "/Desktop/Input/");
 	// provides a mapping between the Author's name and corresponding ASIN/book IDs
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	// running list of authors contained in the authors list panel
@@ -1109,14 +1109,16 @@ public class UserGUI extends JFrame {
 		@Override
 		// handle create button click event
 		public void actionPerformed(ActionEvent e) {
+			boolean success = false;
 			// if the authorToASINMap isn't empty and savedReportFiles isn't empty 
 			if (!authorToASINMap.isEmpty() && !savedReportFiles.isEmpty()) {
 				// create reports for every saved author, given each saved report
-				ReportGenerator.createReport(authorToASINMap, savedReportFiles);
+				success = ReportGenerator.createReport(authorToASINMap, savedReportFiles);
 			} else {
 				// output error message to user
 				logTextBox.append("ERROR CANNOT CREATE REPORTS\n");
 			}
+			if (success) logTextBox.append("Reports Generated Successfully.\n");
 		}
 	}
 
