@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 
 public class AuthorReport {
 	// List of the author's book
-	List<Book> authorsBookList = new ArrayList<>();
-	String reportName = "";
+	private List<Book> authorsBookList = new ArrayList<>();
+	private String reportName = "";
 	
 	/**
 	 * @purpose constructor initializes the report name and builds the authors book list

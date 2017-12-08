@@ -20,7 +20,7 @@ public class CurrencyConverter {
 	public static double getConversion(String currencyType, double royalty) {
 		// assign conversionFactor to the currencyType's corresponding factor found in the conversionMap
 		double conversionFactor = conversionMap.containsKey(currencyType) ? conversionMap.get(currencyType) : 0.0;
-		// returnt the converted value
+		// return the converted value
 		return conversionFactor * royalty;
 	}
 	
