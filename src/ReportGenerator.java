@@ -77,8 +77,7 @@ public class ReportGenerator {
 	 * @param amazonReport AuthorReport containing all the bookData belonging to the author
 	 */
 	private static void writeXLSXSpreadSheet(String reportName, AuthorReport amazonReport) {
-		String userHomeFolder = System.getProperty("user.home") + "/Desktop/Output/";
-		String reportFileName = (userHomeFolder + reportName + ".xlsx"); //name of excel file
+		String reportFileName = (reportName + ".xlsx"); //name of excel file
 		String sheetName = "Amazon Royalties"; //name of sheet
 
 		// declare new workbook object

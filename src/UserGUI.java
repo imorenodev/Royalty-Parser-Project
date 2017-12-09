@@ -29,7 +29,7 @@ public class UserGUI extends JFrame {
 	// Global class variables that need to be shared among individual components
 
 	// initialize and JFileChooser object to allow file selection as input
-	private final JFileChooser FILE_CHOOSER = new JFileChooser(System.getProperty("user.home") + "/Desktop/Input/");
+	private final JFileChooser FILE_CHOOSER = new JFileChooser();
 	// provides a mapping between the Author's name and corresponding ASIN/book IDs
 	private Map<String, ArrayList> authorToASINMap = new HashMap<String, ArrayList>();
 	// running list of authors contained in the authors list panel
